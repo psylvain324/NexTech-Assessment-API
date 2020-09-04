@@ -32,8 +32,8 @@ namespace TechAssessment.Controllers
         [Route("/NewStories")]
         public IEnumerable<Story> GetNewStories()
 		{
-            IEnumerable<Story> stories = _service.GetNewestStories().Result;
-            return null;
+            List<Story> stories = _service.GetNewestStories().Result;
+            return stories;
         }
 	}
 }

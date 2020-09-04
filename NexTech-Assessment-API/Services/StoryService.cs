@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using TechAssessment.Interfaces;
@@ -38,11 +39,17 @@ namespace TechAssessment.Services
             var idList = await GetAllIdsAsync();
             var stories = new List<Story>();
 
+            /*var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                WriteIndented = true
+            };*/
+
             if (idList != null)
             {
                 foreach (string id in idList)
                 {
-                    var httpResponse = await _client.GetAsync(BaseUrl + id + ".json?print=pretty");
+                    var httpResponse = await _client.GetAsync(BaseUrl + "item/" + id + ".json?print=pretty");
 
                     if (!httpResponse.IsSuccessStatusCode)
                     {
