@@ -20,7 +20,7 @@ namespace TechAssessment.Services
 
         public async Task<List<string>> GetAllIdsAsync()
         {
-            var httpResponse = await _client.GetAsync(BaseUrl + "newest");
+            var httpResponse = await _client.GetAsync(BaseUrl + "newstories.json?print=pretty");
 
             if (!httpResponse.IsSuccessStatusCode)
             {
@@ -42,7 +42,7 @@ namespace TechAssessment.Services
             {
                 foreach (string id in idList)
                 {
-                    var httpResponse = await _client.GetAsync(BaseUrl + id);
+                    var httpResponse = await _client.GetAsync(BaseUrl + id + ".json?print=pretty");
 
                     if (!httpResponse.IsSuccessStatusCode)
                     {

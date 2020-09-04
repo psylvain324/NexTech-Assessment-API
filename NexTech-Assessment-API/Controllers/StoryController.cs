@@ -1,17 +1,18 @@
 ﻿using System.Collections.Generic;
+using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TechAssessment.Interfaces;
 using TechAssessment.Models;
+using TechAssessment.Services;
 
 namespace TechAssessment.Controllers
 {
     [Produces("application/json")]
     [ApiController]
-    [Route("[controller]")]
+    [Route("/Story")]
     public class StoryController : Controller
     {
-
         private readonly ILogger<StoryController> _logger;
         private readonly IStoryService _service;
 
@@ -31,7 +32,8 @@ namespace TechAssessment.Controllers
         [Route("/NewStories")]
         public IEnumerable<Story> GetNewStories()
 		{
-            return (IEnumerable<Story>)_service.GetNewestStories();
+            IEnumerable<Story> stories = _service.GetNewestStories().Result;
+            return null;
         }
 	}
 }
