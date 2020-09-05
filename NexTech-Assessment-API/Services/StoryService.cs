@@ -39,12 +39,6 @@ namespace TechAssessment.Services
             var idList = await GetAllIdsAsync();
             var stories = new List<Story>();
 
-            /*var options = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                WriteIndented = true
-            };*/
-
             if (idList != null)
             {
                 foreach (string id in idList)

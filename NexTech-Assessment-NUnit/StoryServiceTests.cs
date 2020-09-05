@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using NUnit.Framework;
+using TechAssessment.Interfaces;
 using TechAssessment.Services;
 
 namespace NexTech_Assessment_NUnit
@@ -9,13 +10,18 @@ namespace NexTech_Assessment_NUnit
         [TestFixture]
         public class ServiceTests
         {
-            private StoryService _service;
+            private IStoryService _service;
             private readonly HttpClient _client;
+
+            public ServiceTests(IStoryService service)
+            {
+                _service = service;
+            }
 
             [SetUp]
             public void SetUp()
             {
-                _service = new StoryService(_client);
+
             }
 
             [Test]

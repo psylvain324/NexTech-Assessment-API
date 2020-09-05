@@ -40,11 +40,12 @@ namespace NexTech_Assessment_API
                 return s.GetRequiredService<IHttpClientFactory>().CreateClient(string.Empty);
             });
 
-            services.AddHttpClient<StoryController>();
-
             services.AddControllers();
             services.AddMvc();
+            services.AddResponseCaching();
+
             services.AddTransient<IStoryService, StoryService>();
+            services.AddHttpClient<StoryController>();
 
             services.AddDistributedRedisCache(options =>
             {
@@ -70,6 +71,7 @@ namespace NexTech_Assessment_API
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
+            app.UseResponseCaching();
 
             app.UseEndpoints(endpoints =>
             {
