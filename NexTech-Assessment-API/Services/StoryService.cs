@@ -36,19 +36,19 @@ namespace TechAssessment.Services
 
         public async Task<IEnumerable<Story>> GetStoriesInParallelFixed()
         {
-            var storyIds = await GetAllIdsAsync();
-            var users = new List<Story>();
             var batchSize = 100;
-            int numberOfBatches = (int)Math.Ceiling((double)storyIds.Count() / batchSize);
+            var idList = await GetAllIdsAsync();
+            var stories = new List<Story>();
+            int numberOfBatches = (int)Math.Ceiling((double)idList.Count() / batchSize);
 
             for (int i = 0; i < numberOfBatches; i++)
             {
-                var currentIds = storyIds.Skip(i * batchSize).Take(batchSize);
+                var currentIds = idList.Skip(i * batchSize).Take(batchSize);
                 var tasks = currentIds.Select(id => GetStoryById(id));
-                users.AddRange(await Task.WhenAll(tasks));
+                stories.AddRange(await Task.WhenAll(tasks));
             }
 
-            return users;
+            return stories;
         }
 
         public async Task<Story> GetStoryById(string id)

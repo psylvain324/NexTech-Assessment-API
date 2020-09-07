@@ -34,14 +34,22 @@ namespace NexTech_Assessment_API
             services.AddSwaggerGen();
             services.AddDbContext<DatabaseContext>(options => options.UseInMemoryDatabase(databaseName: "NexTechAssessmentDB"));
 
-            services.AddHttpClient("hackerNoonClient", client =>
-            {
-                client.BaseAddress = new Uri("https://hacker-news.firebaseio.com/v0/");
-            });
-
             services.TryAddTransient(s =>
             {
                 return s.GetRequiredService<IHttpClientFactory>().CreateClient(string.Empty);
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200")
+                            .AllowAnyHeader()
+                            .AllowAnyOrigin()
+                            .AllowAnyMethod();
+                });
+                options.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
             });
 
             services.AddControllers();
@@ -50,12 +58,6 @@ namespace NexTech_Assessment_API
 
             services.AddTransient<IStoryService, StoryService>();
             services.AddHttpClient<StoryController>();
-
-            services.AddDistributedRedisCache(options =>
-            {
-                options.Configuration = "NextTechAssessment";
-                options.InstanceName = "NextTechAssessmentInstance";
-            });
 
             services.AddHealthChecks();
         }
@@ -74,16 +76,21 @@ namespace NexTech_Assessment_API
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
-            app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
             app.UseResponseCaching();
+
+            app.UseCors(options => options
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
 
+            app.UseHttpsRedirection();
             app.UseHealthChecks("/health", new HealthCheckOptions { ResponseWriter = JsonResponseWriter });
 
         }
