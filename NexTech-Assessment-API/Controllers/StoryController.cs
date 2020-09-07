@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TechAssessment.Interfaces;
@@ -30,13 +31,86 @@ namespace TechAssessment.Controllers
 		[ProducesResponseType(200)]
 		[ProducesResponseType(404)]
         [Route("/NewStories")]
-        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
+        [ResponseCache(Duration = 600, Location = ResponseCacheLocation.Any)]
         public IEnumerable<Story> GetNewStories()
 		{
-            List<Story> stories = new List<Story>();
+            List<Story> stories;
             try
             {
                 stories = _service.GetNewestStories().Result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("There was an error: " + ex.Message);
+                return null;
+            }
+            return stories;
+        }
+
+        /// <summary>
+        /// This returns all the Newest Stories.
+        /// </summary>
+        /// <returns>IEnumerable of Stories</returns>
+        [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [Route("/StoryIds")]
+        [ResponseCache(Duration = 600, Location = ResponseCacheLocation.Any)]
+        public async Task<IEnumerable<string>> GetNewStoryIdsAsync()
+        {
+            List<string> storyIds;
+            try
+            {
+                storyIds = await _service.GetAllIdsAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("There was an error: " + ex.Message);
+                return null;
+            }
+            return storyIds;
+        }
+
+        /// <summary>
+        /// This returns the Newest Stories by page size and number.
+        /// </summary>
+        /// <returns>IEnumerable of Stories</returns>
+        [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [Route("/NewStoriesPaginated/{pageNumber}/{pageSize}")]
+        [ResponseCache(Duration = 600, Location = ResponseCacheLocation.Any)]
+        public IEnumerable<Story> GetNewStoriesByPage(int pageNumber, int pageSize)
+        {
+            List<Story> stories;
+            try
+            {
+                stories = _service.GetPaginatedNewestStories(pageNumber, pageSize).Result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("There was an error: " + ex.Message);
+                return null;
+            }
+            return stories;
+        }
+
+        /// <summary>
+        /// This returns all the Newest Stories.
+        /// </summary>
+        /// <returns>IEnumerable of Stories</returns>
+        [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [Route("/NewStoriesBatch")]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "field", "search" })]
+        public IEnumerable<Story> GetNewStoriesByBatch()
+        {
+            IEnumerable<Story> stories;
+            try
+            {
+
+                stories = (IEnumerable<Story>)_service.GetStoriesInParallelFixed();
             }
             catch (Exception ex)
             {

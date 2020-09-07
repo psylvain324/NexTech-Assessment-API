@@ -1,17 +1,21 @@
 using System;
 using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 using NexTech_Assessment_API.Data;
 using TechAssessment.Controllers;
 using TechAssessment.Interfaces;
 using TechAssessment.Services;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace NexTech_Assessment_API
 {
@@ -52,6 +56,8 @@ namespace NexTech_Assessment_API
                 options.Configuration = "NextTechAssessment";
                 options.InstanceName = "NextTechAssessmentInstance";
             });
+
+            services.AddHealthChecks();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,6 +83,16 @@ namespace NexTech_Assessment_API
             {
                 endpoints.MapControllers();
             });
+
+            app.UseHealthChecks("/health", new HealthCheckOptions { ResponseWriter = JsonResponseWriter });
+
+        }
+
+        private async Task JsonResponseWriter(HttpContext context, HealthReport report)
+        {
+            context.Response.ContentType = "application/json";
+            await JsonSerializer.SerializeAsync(context.Response.Body, new { Status = report.Status.ToString() },
+                new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
         }
     }
 }

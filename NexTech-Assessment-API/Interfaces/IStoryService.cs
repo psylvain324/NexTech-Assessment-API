@@ -9,6 +9,7 @@ namespace TechAssessment.Interfaces
         Task<List<string>> GetAllIdsAsync();
         Task<Story> GetStoryAsync(int id);
         Task<List<Story>> GetNewestStories();
-        Task<PagedList<Story>> GetPaginatedNewestStories(PagingParams pagingParams);
+        Task<IEnumerable<Story>> GetStoriesInParallelFixed();
+        Task<List<Story>> GetPaginatedNewestStories(int pageNumber, int pageSize);
     }
 }
