@@ -39,9 +39,16 @@ namespace NexTech_Assessment_NUnit
             }
 
             [Test]
-            public void GetStoryByIdReturnsValue()
+            public void GetStoryByNumberAndSizeeturnsValue()
             {
-                var result = _service.Setup(t => t.GetAllIdsAsync());
+                var result = _service.Setup(t => t.GetStoryByNumberAndSize(1, 10));
+                Assert.IsNotNull(result);
+            }
+
+            [Test]
+            public void GetStoryByIdReturnsCorrectValue()
+            {
+                var result = _service.Setup(t => t.GetStoryById("24402410"));
                 Assert.IsNotNull(result);
             }
 

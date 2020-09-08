@@ -151,7 +151,6 @@ namespace TechAssessment.Controllers
             return stories;
         }
 
-
         /// <summary>
         /// This returns all the Newest Stories by field and text specified.
         /// </summary>
