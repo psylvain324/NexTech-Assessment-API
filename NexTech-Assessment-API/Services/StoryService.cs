@@ -39,6 +39,7 @@ namespace TechAssessment.Services
             var batchSize = 100;
             var idList = await GetAllIdsAsync();
             var stories = new List<Story>();
+            var validStories = new List<Story>();
             int numberOfBatches = (int)Math.Ceiling((double)idList.Count() / batchSize);
 
             for (int i = 0; i < numberOfBatches; i++)
@@ -48,7 +49,15 @@ namespace TechAssessment.Services
                 stories.AddRange(await Task.WhenAll(tasks));
             }
 
-            return stories;
+            foreach(Story story in stories)
+            {
+                if(story != null)
+                {
+                    validStories.Add(story);
+                }
+            }
+
+            return validStories;
         }
 
         public async Task<Story> GetStoryById(string id)
@@ -62,6 +71,10 @@ namespace TechAssessment.Services
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var story = JsonConvert.DeserializeObject<Story>(content);
+            if(story.Url == "" || story.Url == null)
+            {
+                return null;
+            }
             return story;
         }
 
@@ -93,22 +106,8 @@ namespace TechAssessment.Services
             return stories;
         }
 
-        public async Task<Story> GetStoryAsync(int id)
-        {
-            var httpResponse = await _client.GetAsync($"{BaseUrl}{id}");
 
-            if (!httpResponse.IsSuccessStatusCode)
-            {
-                throw new Exception("Cannot retrieve tasks");
-            }
-
-            var content = await httpResponse.Content.ReadAsStringAsync();
-            var todoItem = JsonConvert.DeserializeObject<Story>(content);
-
-            return todoItem;
-        }
-
-        public async Task<List<Story>> GetPaginatedNewestStories(int pageNumber, int pageSize)
+        public async Task<List<Story>> GetStoryByNumberAndSize(int pageNumber, int pageSize)
         {
             var idList = await GetAllIdsAsync();
             var stories = new List<Story>();

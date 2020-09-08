@@ -1,32 +1,38 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Testing;
+﻿using System;
+using System.Net.Http;
+using Moq;
+using NexTech_Assessment_API.Data;
 using NUnit.Framework;
-using Xunit;
+using TechAssessment.Controllers;
 
 namespace NexTech_Assessment_NUnit
-{ 
+{
     [TestFixture]
-    public class StoryControllerTests
+    public class StoriesControllerTests
     {
-        public StoryControllerTests()
+        private readonly DatabaseContext databaseContext;
+        private const string ServiceBaseURL = "http://localhost:5001/";
+        private HttpClient _client;
+        private HttpResponseMessage _response;
+        private Mock<StoryController> _controller;
+
+        [OneTimeSetUp]
+        public void Setup()
         {
+            _controller = new Mock<StoryController>(MockBehavior.Strict);
+            _client = new HttpClient { BaseAddress = new Uri(ServiceBaseURL) };
         }
 
-        [Fact]
-        public async Task BasicEndPointTest()
+        [SetUp]
+        public void ReInitializeTest()
         {
-            // Arrange
-            var factory = new WebApplicationFactory<NexTech_Assessment_API.Startup>();
+            _client = new HttpClient { BaseAddress = new Uri(ServiceBaseURL) };
+        }
 
-            // Create an HttpClient which is setup for the test host
-            var client = factory.CreateClient();
-
-            // Act
-            var response = await client.GetAsync("/Home/Test");
-
-            // Assert
-            var responseString = await response.Content.ReadAsStringAsync();
-            Xunit.Assert.NotEmpty(responseString);
+        [Test]
+        public void GetStoriesByBatchTest()
+        {
+            
         }
     }
 }

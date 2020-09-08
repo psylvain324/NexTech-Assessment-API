@@ -1,44 +1,84 @@
-﻿using System.Text.Json;
+﻿using System.Net;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Testing;
-using NexTech_Assessment_API;
+using Microsoft.AspNetCore.TestHost;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
-using Xunit;
 
 namespace NexTech_Assessment_NUnit
 {
-   [Collection("Integration Tests")]
-   [TestFixture]
-    public class IntgrationTests
+    [TestFixture]
+    public class IntegrationTests
     {
-        private readonly WebApplicationFactory<Startup> _factory;
+        private const string BaseUrl = "https://hacker-news.firebaseio.com/v0/";
+        private HttpClient _client;
+        private TestServer _server;
 
-        public IntgrationTests(WebApplicationFactory<Startup> factory)
+        [OneTimeSetUp]
+        public void Setup()
         {
-            _factory = factory;
+            _client = new HttpClient();
         }
 
-        [Fact]
-        public async Task GetRoot_ReturnsSuccessAndStatusUp()
+        [Test]
+        public async Task ReturnStoryIdsFromExternalApi()
         {
-            // Arrange
-            var client = _factory.CreateClient();
-
             // Act
-            var response = await client.GetAsync("/");
+            var response = await _client.GetAsync(BaseUrl + "newstories.json?print=pretty");
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
 
             // Assert
-            response.EnsureSuccessStatusCode();
-            Xunit.Assert.NotNull(response.Content);
-            var responseObject = JsonSerializer.Deserialize<ResponseType>(
-                await response.Content.ReadAsStringAsync(),
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            Xunit.Assert.Equal("Up", responseObject?.Status);
+            Assert.GreaterOrEqual(responseString.Length, 500);
         }
 
-        private class ResponseType
+        [Test]
+        public async Task MockHttpClientRequest()
         {
-            public string Status { get; set; }
+            const string testContent = "Test";
+            var mockMessageHandler = new Mock<HttpMessageHandler>();
+            mockMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent(testContent)
+                });
+            var underTest = new MockClient(new HttpClient(mockMessageHandler.Object));
+
+            // Act
+            var result = await underTest.GetContentSize("http://anyurl");
+
+            // Assert
+            Assert.AreEqual(testContent.Length, result);
         }
+
+        public async Task<int> GetContentSize(string uri)
+        {
+            var response = await _client.GetAsync(uri);
+            var content = await response.Content.ReadAsStringAsync();
+            return content.Length;
+        }
+
+    }
+
+    public class MockClient
+    {
+        public MockClient(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
+
+        public async Task<int> GetContentSize(string uri)
+        {
+            var response = await _httpClient.GetAsync(uri);
+            var content = await response.Content.ReadAsStringAsync();
+            return content.Length;
+        }
+
+        private readonly HttpClient _httpClient;
     }
 }

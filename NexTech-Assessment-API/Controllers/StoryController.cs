@@ -10,7 +10,6 @@ using TechAssessment.Models;
 
 namespace TechAssessment.Controllers
 {
-    [EnableCors("AllowOrigin")]
     [Produces("application/json")]
     [ApiController]
     public class StoryController : Controller
@@ -25,15 +24,15 @@ namespace TechAssessment.Controllers
         }
 
         /// <summary>
-        /// This returns all the Newest Stories.
+        /// Depracated - This returns all the Newest Stories.
         /// </summary>
         /// <returns>IEnumerable of Stories</returns>
-        [EnableCors("AllowOrigin")]
         [HttpGet]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(404)]
         [Route("/NewStories")]
         [ResponseCache(Duration = 600, Location = ResponseCacheLocation.Any)]
+        [EnableCors("CorsPolicy")]
         public IEnumerable<Story> GetNewStories()
 		{
             List<Story> stories;
@@ -50,15 +49,15 @@ namespace TechAssessment.Controllers
         }
 
         /// <summary>
-        /// This returns all the Newest Stories.
+        /// This returns all the Newest Story Ids.
         /// </summary>
-        /// <returns>IEnumerable of Stories</returns>
-        [EnableCors("AllowOrigin")]
+        /// <returns>IEnumerable of Strings</returns>
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         [Route("/StoryIds")]
         [ResponseCache(Duration = 600, Location = ResponseCacheLocation.Any)]
+        [EnableCors("CorsPolicy")]
         public async Task<IEnumerable<string>> GetNewStoryIdsAsync()
         {
             List<string> storyIds;
@@ -75,40 +74,17 @@ namespace TechAssessment.Controllers
         }
 
         /// <summary>
-        /// This returns the Newest Stories by page size and number.
-        /// </summary>
-        /// <returns>IEnumerable of Stories</returns>
-        [EnableCors("AllowOrigin")]
-        [HttpGet]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
-        [Route("/NewStoriesBy/{pageNumber}/{pageSize}")]
-        [ResponseCache(Duration = 600, Location = ResponseCacheLocation.Any)]
-        public IEnumerable<Story> GetNewStoriesByPage(int pageNumber, int pageSize)
-        {
-            List<Story> stories;
-            try
-            {
-                stories = _service.GetPaginatedNewestStories(pageNumber, pageSize).Result;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("There was an error: " + ex.Message);
-                return null;
-            }
-            return stories;
-        }
-
-        /// <summary>
         /// This returns all the Newest Stories.
+        /// More Efficient then GetStories()
+        /// And is the API used in the UI project.
         /// </summary>
         /// <returns>IEnumerable of Stories</returns>
-        [EnableCors("AllowOrigin")]
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         [Route("/NewStoriesByBatch")]
         [ResponseCache(Duration = 600, Location = ResponseCacheLocation.Any)]
+        [EnableCors("CorsPolicy")]
         public async Task<IEnumerable<Story>> GetNewStoriesByBatchAsync()
         {
             List<Story> stories;
@@ -125,16 +101,43 @@ namespace TechAssessment.Controllers
             return stories;
         }
 
+
+        /// <summary>
+        /// This returns the Newest Stories by Size and Number
+        /// </summary>
+        /// <returns>IEnumerable of Stories</returns>
+        [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [Route("/NewStoriesBy/{pageNumber}/{pageSize}")]
+        [ResponseCache(Duration = 600, Location = ResponseCacheLocation.Any)]
+        [EnableCors("CorsPolicy")]
+        public IEnumerable<Story> GetNewStoriesByPage(int pageNumber, int pageSize)
+        {
+            List<Story> stories;
+            try
+            {
+                stories = _service.GetStoryByNumberAndSize(pageNumber, pageSize).Result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("There was an error: " + ex.Message);
+                return null;
+            }
+            return stories;
+        }
+
+
         /// <summary>
         /// This returns all the Newest Stories by field and text specified.
         /// </summary>
         /// <returns>IEnumerable of Stories</returns>
-        [EnableCors("AllowOrigin")]
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         [Route("/NewStories/{field}/{search}")]
         [ResponseCache(Duration = 600, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "field", "search" })]
+        [EnableCors("CorsPolicy")]
         public IEnumerable<Story> GetNewStoriesSearch(string field, string search)
         {
             try

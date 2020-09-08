@@ -41,15 +41,12 @@ namespace NexTech_Assessment_API
 
             services.AddCors(options =>
             {
-                options.AddDefaultPolicy(
-                builder =>
-                {
-                    builder.WithOrigins("http://localhost:4200")
-                            .AllowAnyHeader()
-                            .AllowAnyOrigin()
-                            .AllowAnyMethod();
-                });
-                options.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+                options.AddPolicy(
+                  "CorsPolicy",
+                  builder => builder.WithOrigins("https://localhost:4200")
+                  .AllowAnyMethod()
+                  .AllowAnyHeader()
+                  .AllowCredentials());
             });
 
             services.AddControllers();
@@ -78,19 +75,15 @@ namespace NexTech_Assessment_API
 
             app.UseRouting();
             app.UseAuthorization();
-            app.UseResponseCaching();
-
-            app.UseCors(options => options
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
+            app.UseCors("CorsPolicy");
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
+            app.UseResponseCaching();
             app.UseHealthChecks("/health", new HealthCheckOptions { ResponseWriter = JsonResponseWriter });
 
         }
