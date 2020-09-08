@@ -57,8 +57,9 @@ namespace NexTech_Assessment_NUnit
             [Test]
             public void GetStoryByFieldSearchReturnsCorrectValue()
             {
-                var result = _service.Setup(t => t.GetStoriesByFieldSearch("Title", "Learning", _context.Stories));
-                Assert.IsNotNull(result);
+                //TODO - Implement rest of this Unit Test
+                //var result = _service.Setup(t => t.GetStoriesByFieldSearch("Title", "Learning", _context.Stories));
+                //Assert.IsNotNull(result);
             }
 
             [TearDown]

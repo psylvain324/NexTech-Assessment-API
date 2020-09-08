@@ -23,7 +23,8 @@ namespace TechAssessment.Controllers
         }
 
         /// <summary>
-        /// Depracated - This returns all the Newest Stories.
+        /// Deprecated - Due to Slow Performance
+        /// This returns all the Newest Stories. 
         /// </summary>
         /// <returns>IEnumerable of Stories</returns>
         [HttpGet]
