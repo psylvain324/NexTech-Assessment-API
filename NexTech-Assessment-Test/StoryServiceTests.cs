@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using Moq;
+using NexTech_Assessment_API.Data;
 using NUnit.Framework;
 using TechAssessment.Interfaces;
 using WireMock.Server;
@@ -15,6 +16,7 @@ namespace NexTech_Assessment_NUnit
             private Mock<IStoryService> _service;
             private HttpClient _client;
             private WireMockServer _stubServer;
+            private DatabaseContext _context;
 
             [OneTimeSetUp]
             public void SetUp()
@@ -52,6 +54,13 @@ namespace NexTech_Assessment_NUnit
                 Assert.IsNotNull(result);
             }
 
+            [Test]
+            public void GetStoryByFieldSearchReturnsCorrectValue()
+            {
+                var result = _service.Setup(t => t.GetStoriesByFieldSearch("Title", "Learning", _context.Stories));
+                Assert.IsNotNull(result);
+            }
+
             [TearDown]
             public void TearDown()
             {
@@ -66,7 +75,7 @@ namespace NexTech_Assessment_NUnit
             }
 
             /*
-             * "by": "pseudolus",
+             *  "by": "pseudolus",
                 "descendants": 0,
                 "id": 24402410,
                 "kids": null,

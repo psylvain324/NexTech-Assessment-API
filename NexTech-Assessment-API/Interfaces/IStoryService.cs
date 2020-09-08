@@ -10,6 +10,7 @@ namespace TechAssessment.Interfaces
         Task<Story> GetStoryById(string id);
         Task<List<Story>> GetNewestStories();
         Task<IEnumerable<Story>> GetStoriesInParallelFixed();
+        IEnumerable<Story> GetStoriesByFieldSearch(string field, string search, IEnumerable<Story> stories);
         Task<List<Story>> GetStoryByNumberAndSize(int pageNumber, int pageSize);
     }
 }

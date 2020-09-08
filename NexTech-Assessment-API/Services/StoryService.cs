@@ -49,9 +49,9 @@ namespace TechAssessment.Services
                 stories.AddRange(await Task.WhenAll(tasks));
             }
 
-            foreach(Story story in stories)
+            foreach (Story story in stories)
             {
-                if(story != null)
+                if (story != null)
                 {
                     validStories.Add(story);
                 }
@@ -129,5 +129,23 @@ namespace TechAssessment.Services
 
             return stories;
         }
+
+        public IEnumerable<Story> GetStoriesByFieldSearch(string field, string search, IEnumerable<Story> stories)
+        {
+            switch (field)
+            {
+                case "Title":
+                    stories = from story in stories
+                              where story.Title.Contains(search)
+                              select story;
+                    break;
+                //Easily add more search fields
+                default:
+                    return stories;
+            }
+
+            return stories;
+        }
+
     }
 }

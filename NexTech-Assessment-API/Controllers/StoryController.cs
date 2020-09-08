@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -28,13 +27,12 @@ namespace TechAssessment.Controllers
         /// </summary>
         /// <returns>IEnumerable of Stories</returns>
         [HttpGet]
-		[ProducesResponseType(200)]
-		[ProducesResponseType(404)]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         [Route("/NewStories")]
         [ResponseCache(Duration = 600, Location = ResponseCacheLocation.Any)]
-        [EnableCors("CorsPolicy")]
         public IEnumerable<Story> GetNewStories()
-		{
+        {
             List<Story> stories;
             try
             {
@@ -82,13 +80,11 @@ namespace TechAssessment.Controllers
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        [Route("/NewStoriesByBatch")]
+        [Route("/NewStoriesParallel")]
         [ResponseCache(Duration = 600, Location = ResponseCacheLocation.Any)]
-        [EnableCors("CorsPolicy")]
-        public async Task<IEnumerable<Story>> GetNewStoriesByBatchAsync()
+        public async Task<IEnumerable<Story>> GetNewStoriesParallel()
         {
             List<Story> stories;
-            //List<string> storyIds;
             try
             {
                 stories = (List<Story>)await _service.GetStoriesInParallelFixed();
@@ -110,7 +106,6 @@ namespace TechAssessment.Controllers
         [ProducesResponseType(404)]
         [Route("/Story/{id}")]
         [ResponseCache(Duration = 600, Location = ResponseCacheLocation.Any)]
-        [EnableCors("CorsPolicy")]
         public async Task<Story> GetStoryById(string id)
         {
             Story story;
@@ -135,7 +130,6 @@ namespace TechAssessment.Controllers
         [ProducesResponseType(404)]
         [Route("/NewStoriesBy/{pageNumber}/{pageSize}")]
         [ResponseCache(Duration = 600, Location = ResponseCacheLocation.Any)]
-        [EnableCors("CorsPolicy")]
         public IEnumerable<Story> GetNewStoriesByPage(int pageNumber, int pageSize)
         {
             List<Story> stories;
@@ -158,27 +152,14 @@ namespace TechAssessment.Controllers
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
+        [ResponseCache(Duration = 600, Location = ResponseCacheLocation.Any)]
         [Route("/NewStories/{field}/{search}")]
-        [ResponseCache(Duration = 600, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "field", "search" })]
-        [EnableCors("CorsPolicy")]
         public IEnumerable<Story> GetNewStoriesSearch(string field, string search)
         {
             try
             {
-                var stories = _service.GetNewestStories().Result;
-                switch (field)
-                {
-                    case "Title":
-                        stories = (from story in stories
-                                   where story.Title.Contains(search)
-                                   select story).ToList();
-                        break;
-                    default:
-                        _logger.Log(LogLevel.Information, "Stories list unchanged!", stories);
-                        return stories;
-                }
-
-                return stories;
+                var stories = _service.GetStoriesInParallelFixed().Result;
+                return _service.GetStoriesByFieldSearch(field, search, stories);
             }
             catch (Exception ex)
             {
@@ -186,5 +167,6 @@ namespace TechAssessment.Controllers
                 return null;
             }
         }
+
     }
 }

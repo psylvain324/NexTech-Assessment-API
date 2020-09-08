@@ -12,28 +12,28 @@ namespace NexTech_Assessment_NUnit.Data
             {
                 new Story()
                 {
-                    Url = "",
-                    Title = ""
+                    Url = "www.test234.com",
+                    Title = "123 - Test1"
                 },  
                 new Story()
                 {
-                    Url = "",
-                    Title = ""
+                    Url = "www.test234.com",
+                    Title = "123 - Test2"
                 },  
                 new Story()
                 {
-                    Url = "",
-                    Title = ""
+                    Url = "www.test345.com",
+                    Title = "123 - Test3"
                 },  
                 new Story()
                 {
-                    Url = "",
-                    Title = ""
+                    Url = "www.test456.com",
+                    Title = "123 - Test4"
                 },  
                 new Story()
                 {
-                    Url = "",
-                    Title = ""
+                    Url = "www.test567.com",
+                    Title = "Learning - Test5"
                 }
             };
 
