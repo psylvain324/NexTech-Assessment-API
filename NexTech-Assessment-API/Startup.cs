@@ -46,7 +46,7 @@ namespace NexTech_Assessment_API
                   builder => builder.WithOrigins("https://localhost:4200")
                   .AllowAnyMethod()
                   .AllowAnyHeader()
-                  .AllowCredentials());
+                  .AllowAnyOrigin());
             });
 
             services.AddControllers();
