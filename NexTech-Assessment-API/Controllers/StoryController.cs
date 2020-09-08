@@ -101,6 +101,30 @@ namespace TechAssessment.Controllers
             return stories;
         }
 
+        /// <summary>
+        /// This returns all the Newest Story Ids.
+        /// </summary>
+        /// <returns>IEnumerable of Strings</returns>
+        [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [Route("/Story/{id}")]
+        [ResponseCache(Duration = 600, Location = ResponseCacheLocation.Any)]
+        [EnableCors("CorsPolicy")]
+        public async Task<Story> GetStoryById(string id)
+        {
+            Story story;
+            try
+            {
+                story = await _service.GetStoryById(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("There was an error: " + ex.Message);
+                return null;
+            }
+            return story;
+        }
 
         /// <summary>
         /// This returns the Newest Stories by Size and Number
