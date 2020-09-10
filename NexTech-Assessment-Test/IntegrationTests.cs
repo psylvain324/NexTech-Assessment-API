@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Moq;
 using Moq.Protected;
@@ -10,7 +11,7 @@ using NUnit.Framework;
 namespace NexTech_Assessment_NUnit
 {
     [TestFixture]
-    public class IntegrationTests
+    public class IntegrationTests<TStartup>: WebApplicationFactory<TStartup> where TStartup : class
     {
         private const string BaseUrl = "https://hacker-news.firebaseio.com/v0/";
         private HttpClient _client;

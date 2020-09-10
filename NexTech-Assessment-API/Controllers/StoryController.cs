@@ -26,13 +26,16 @@ namespace TechAssessment.Controllers
         /// Deprecated - Due to Slow Performance
         /// This returns all the Newest Stories. 
         /// </summary>
-        /// <returns>IEnumerable of Stories</returns>
+        /// <returns>IActionResult of Stories</returns>
+        /// Explicit Header:
+        /// public IEnumerable<Story> GetNewStories()
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         [Route("/NewStories")]
-        [ResponseCache(Duration = 600, Location = ResponseCacheLocation.Any)]
-        public IEnumerable<Story> GetNewStories()
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
+        [EnableCors("CorsPolicy")]
+        public IActionResult GetNewStories()
         {
             List<Story> stories;
             try
@@ -42,22 +45,24 @@ namespace TechAssessment.Controllers
             catch (Exception ex)
             {
                 _logger.LogError("There was an error: " + ex.Message);
-                return null;
+                return StatusCode(500, "Internal server error"); ;
             }
-            return stories;
+            return Ok(stories);
         }
 
         /// <summary>
         /// This returns all the Newest Story Ids.
         /// </summary>
-        /// <returns>IEnumerable of Strings</returns>
+        /// <returns>IActionResult of IEnumerable Strings</returns>
+        /// Explicit Header:
+        /// public async Task<IEnumerable<string>> GetNewStoryIdsAsync()
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         [Route("/StoryIds")]
-        [ResponseCache(Duration = 600, Location = ResponseCacheLocation.Any)]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
         [EnableCors("CorsPolicy")]
-        public async Task<IEnumerable<string>> GetNewStoryIdsAsync()
+        public async Task<IActionResult> GetNewStoryIdsAsync()
         {
             List<string> storyIds;
             try
@@ -67,9 +72,9 @@ namespace TechAssessment.Controllers
             catch (Exception ex)
             {
                 _logger.LogError("There was an error: " + ex.Message);
-                return null;
+                return StatusCode(500, "Internal server error"); ;
             }
-            return storyIds;
+            return Ok(storyIds);
         }
 
         /// <summary>
@@ -77,13 +82,16 @@ namespace TechAssessment.Controllers
         /// More Efficient then GetStories()
         /// And is the API used in the UI project.
         /// </summary>
-        /// <returns>IEnumerable of Stories</returns>
+        /// <returns>IActionResult of IEnumerable Stories</returns>
+        /// Explicit Header:
+        /// public async Task<IEnumerable<Story>> GetNewStoriesParallel()
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         [Route("/NewStoriesParallel")]
-        [ResponseCache(Duration = 600, Location = ResponseCacheLocation.Any)]
-        public async Task<IEnumerable<Story>> GetNewStoriesParallel()
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
+        [EnableCors("CorsPolicy")]
+        public async Task<IActionResult> GetNewStoriesParallel()
         {
             List<Story> stories;
             try
@@ -93,21 +101,24 @@ namespace TechAssessment.Controllers
             catch (Exception ex)
             {
                 _logger.LogError("There was an error: " + ex.Message);
-                return null;
+                return StatusCode(500, "Internal server error"); ;
             }
-            return stories;
+            return Ok(stories);
         }
 
         /// <summary>
         /// This returns all the Newest Story Ids.
         /// </summary>
-        /// <returns>IEnumerable of Strings</returns>
+        /// <returns>IActionResult of Story</returns>
+        /// Explicit Header:
+        /// public async Task<Story> GetStoryById(string id)
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         [Route("/Story/{id}")]
-        [ResponseCache(Duration = 600, Location = ResponseCacheLocation.Any)]
-        public async Task<Story> GetStoryById(string id)
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
+        [EnableCors("CorsPolicy")]
+        public async Task<IActionResult> GetStoryById(string id)
         {
             Story story;
             try
@@ -117,21 +128,24 @@ namespace TechAssessment.Controllers
             catch (Exception ex)
             {
                 _logger.LogError("There was an error: " + ex.Message);
-                return null;
+                return StatusCode(500, "Internal server error"); ;
             }
-            return story;
+            return Ok(story);
         }
 
         /// <summary>
         /// This returns the Newest Stories by Size and Number
         /// </summary>
-        /// <returns>IEnumerable of Stories</returns>
+        /// <returns>IActionResult IEnumerable Stories</returns>
+        /// Explicit Header:
+        /// public IEnumerable<Story> GetNewStoriesByPage(int pageNumber, int pageSize)
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         [Route("/NewStoriesBy/{pageNumber}/{pageSize}")]
-        [ResponseCache(Duration = 600, Location = ResponseCacheLocation.Any)]
-        public IEnumerable<Story> GetNewStoriesByPage(int pageNumber, int pageSize)
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
+        [EnableCors("CorsPolicy")]
+        public IActionResult GetNewStoriesByPage(int pageNumber, int pageSize)
         {
             List<Story> stories;
             try
@@ -141,31 +155,34 @@ namespace TechAssessment.Controllers
             catch (Exception ex)
             {
                 _logger.LogError("There was an error: " + ex.Message);
-                return null;
+                return StatusCode(500, "Internal server error"); ;
             }
-            return stories;
+            return Ok(stories);
         }
 
         /// <summary>
         /// This returns all the Newest Stories by field and text specified.
         /// </summary>
-        /// <returns>IEnumerable of Stories</returns>
+        /// <returns>IActionResult ofIEnumerable Stories</returns>
+        /// Explicit Header:
+        /// public IEnumerable<Story> GetNewStoriesSearch(string field, string search)
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        [ResponseCache(Duration = 600, Location = ResponseCacheLocation.Any)]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
         [Route("/NewStories/{field}/{search}")]
-        public IEnumerable<Story> GetNewStoriesSearch(string field, string search)
+        [EnableCors("CorsPolicy")]
+        public IActionResult GetNewStoriesSearch(string field, string search)
         {
             try
             {
                 var stories = _service.GetStoriesInParallelFixed().Result;
-                return _service.GetStoriesByFieldSearch(field, search, stories);
+                return Ok(_service.GetStoriesByFieldSearch(field, search, stories));
             }
             catch (Exception ex)
             {
                 _logger.LogError("There was an error: " + ex.Message);
-                return null;
+                return StatusCode(500, "Internal server error"); ;
             }
         }
 

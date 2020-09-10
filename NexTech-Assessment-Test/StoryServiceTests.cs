@@ -4,6 +4,9 @@ using Moq;
 using NexTech_Assessment_API.Data;
 using NUnit.Framework;
 using TechAssessment.Interfaces;
+using TechAssessment.Models;
+using WireMock.RequestBuilders;
+using WireMock.ResponseBuilders;
 using WireMock.Server;
 
 namespace NexTech_Assessment_NUnit
@@ -13,7 +16,7 @@ namespace NexTech_Assessment_NUnit
         [TestFixture]
         public class ServiceTests
         {
-            private Mock<IStoryService> _service;
+            private Mock<IStoryService> _mockService;
             private HttpClient _client;
             private WireMockServer _stubServer;
             private DatabaseContext _context;
@@ -22,35 +25,35 @@ namespace NexTech_Assessment_NUnit
             public void SetUp()
             {
                 _client = new HttpClient();
-                _service = new Mock<IStoryService>(MockBehavior.Strict);
+                _mockService = new Mock<IStoryService>(MockBehavior.Strict);
                 _stubServer = WireMockServer.Start();
             }
 
             [Test]
             public void GetStoriesInParallelFixedReturnsValue()
             {
-                var result = _service.Setup(t => t.GetStoriesInParallelFixed());
+                var result = _mockService.Setup(t => t.GetStoriesInParallelFixed());
                 Assert.IsNotNull(result);
             }
 
             [Test]
             public void GetStoryIdsAsyncReturnsValue()
             {
-                var result = _service.Setup(t => t.GetAllIdsAsync());
+                var result = _mockService.Setup(t => t.GetAllIdsAsync());
                 Assert.IsNotNull(result);
             }
 
             [Test]
             public void GetStoryByNumberAndSizeeturnsValue()
             {
-                var result = _service.Setup(t => t.GetStoryByNumberAndSize(1, 10));
+                var result = _mockService.Setup(t => t.GetStoryByNumberAndSize(1, 10));
                 Assert.IsNotNull(result);
             }
 
             [Test]
             public void GetStoryByIdReturnsCorrectValue()
             {
-                var result = _service.Setup(t => t.GetStoryById("24402410"));
+                var result = _mockService.Setup(t => t.GetStoryById("24402410"));
                 Assert.IsNotNull(result);
             }
 
@@ -60,6 +63,19 @@ namespace NexTech_Assessment_NUnit
                 //TODO - Implement rest of this Unit Test
                 //var result = _service.Setup(t => t.GetStoriesByFieldSearch("Title", "Learning", _context.Stories));
                 //Assert.IsNotNull(result);
+            }
+
+            [Test]
+            public void GetStoryByIdReturnsOne()
+            {
+                //Arrange 
+                _stubServer
+                    .Given(
+                        Request.Create().WithPath("/story/24402410").UsingGet())
+                    .RespondWith(
+                        Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json"));
             }
 
             [TearDown]

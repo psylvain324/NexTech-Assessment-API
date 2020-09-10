@@ -69,7 +69,7 @@ namespace NexTech_Assessment_API
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "NexTech Assessment - Phillip Sylvain V1");
             });
 
             app.UseRouting();

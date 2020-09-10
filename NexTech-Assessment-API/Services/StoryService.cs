@@ -147,5 +147,9 @@ namespace TechAssessment.Services
             return stories;
         }
 
+        public Task<bool> StoryExists(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

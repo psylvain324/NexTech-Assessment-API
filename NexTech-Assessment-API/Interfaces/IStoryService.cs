@@ -12,5 +12,6 @@ namespace TechAssessment.Interfaces
         Task<IEnumerable<Story>> GetStoriesInParallelFixed();
         IEnumerable<Story> GetStoriesByFieldSearch(string field, string search, IEnumerable<Story> stories);
         Task<List<Story>> GetStoryByNumberAndSize(int pageNumber, int pageSize);
+        Task<bool> StoryExists(int id);
     }
 }
