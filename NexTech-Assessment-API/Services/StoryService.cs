@@ -36,7 +36,7 @@ namespace TechAssessment.Services
 
         public async Task<IEnumerable<Story>> GetStoriesInParallelFixed()
         {
-            var batchSize = 100;
+            var batchSize = 50;
             var idList = await GetAllIdsAsync();
             var stories = new List<Story>();
             var validStories = new List<Story>();
