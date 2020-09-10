@@ -50,7 +50,7 @@ namespace NexTech_Assessment_NUnit
             var underTest = new MockClient(new HttpClient(mockMessageHandler.Object));
 
             // Act
-            var result = await underTest.GetContentSize("http://anyurl");
+            var result = await underTest.GetContentSize("http://localhost:5001");
 
             // Assert
             Assert.AreEqual(testContent.Length, result);
