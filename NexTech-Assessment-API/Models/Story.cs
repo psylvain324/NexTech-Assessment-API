@@ -1,17 +1,7 @@
 ﻿using System.Collections.Generic;
 
-namespace TechAssessment.Models
+namespace NexTech_Assessment_API.Models
 {
-    /*
-     *   "by" : "krnbatra",
-          "descendants" : 0,
-          "id" : 24375946,
-          "score" : 1,
-          "time" : 1599234128,
-          "title" : "I created my side project in a day and landed on first page on ProductHunt",
-          "type" : "story",
-          "url" : "https://medium.com/@karandeepbatra/how-i-created-a-telegram-bot-in-a-day-and-landed-on-the-first-page-on-producthunt-2155ed8b0a67"
-     */
     public class Story
     {
 
@@ -39,4 +29,5 @@ namespace TechAssessment.Models
 
         }
     }
+
 }

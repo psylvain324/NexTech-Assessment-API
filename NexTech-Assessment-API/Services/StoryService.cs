@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using TechAssessment.Interfaces;
-using TechAssessment.Models;
+using NexTech_Assessment_API.Interfaces;
+using NexTech_Assessment_API.Models;
 
-namespace TechAssessment.Services
+namespace NexTech_Assessment_API.Services
 {
     public class StoryService : IStoryService
     {
@@ -78,6 +79,23 @@ namespace TechAssessment.Services
             return story;
         }
 
+        public IEnumerable<Story> GetStoriesByFieldSearch(string field, string search, IEnumerable<Story> stories)
+        {
+            switch (field)
+            {
+                case "Title":
+                    stories = from story in stories
+                              where story.Title.Contains(search)
+                              select story;
+                    break;
+                //Easily add more search fields
+                default:
+                    return stories;
+            }
+
+            return stories;
+        }
+
         public async Task<List<Story>> GetNewestStories()
         {
             var idList = await GetAllIdsAsync();
@@ -106,48 +124,7 @@ namespace TechAssessment.Services
             return stories;
         }
 
-
-        public async Task<List<Story>> GetStoryByNumberAndSize(int pageNumber, int pageSize)
-        {
-            var idList = await GetAllIdsAsync();
-            var stories = new List<Story>();
-            int collectionSize = pageNumber * pageSize;
-
-            for (int i = collectionSize; i < collectionSize + pageSize; i++)
-            {
-                var httpResponse = await _client.GetAsync(BaseUrl + "item/" + idList.ElementAt(i) + ".json?print=pretty");
-
-                if (!httpResponse.IsSuccessStatusCode)
-                {
-                    throw new Exception("Unable to retrieve Story!");
-                }
-
-                var content = await httpResponse.Content.ReadAsStringAsync();
-                var story = JsonConvert.DeserializeObject<Story>(content);
-                stories.Add(story);
-            }
-
-            return stories;
-        }
-
-        public IEnumerable<Story> GetStoriesByFieldSearch(string field, string search, IEnumerable<Story> stories)
-        {
-            switch (field)
-            {
-                case "Title":
-                    stories = from story in stories
-                              where story.Title.Contains(search)
-                              select story;
-                    break;
-                //Easily add more search fields
-                default:
-                    return stories;
-            }
-
-            return stories;
-        }
-
-        public Task<bool> StoryExists(int id)
+        public Task<List<Story>> GetNewestStoriesPaginated(PagingParams pagingParams)
         {
             throw new NotImplementedException();
         }

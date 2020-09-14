@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TechAssessment.Models;
+using NexTech_Assessment_API.Models;
 
 namespace NexTech_Assessment_API.Data
 {
@@ -10,11 +10,12 @@ namespace NexTech_Assessment_API.Data
         {
         }
 
-        public DbSet<Story> Stories { get; set; }
+        public virtual DbSet<Story> StaticTestStories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
         }
     }
+
 }

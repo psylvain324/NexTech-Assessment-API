@@ -2,34 +2,56 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
 using Moq;
 using Moq.Protected;
+using NexTech_Assessment_API.Interfaces;
 using NUnit.Framework;
 
 namespace NexTech_Assessment_NUnit
 {
     [TestFixture]
-    public class IntegrationTests<TStartup>: WebApplicationFactory<TStartup> where TStartup : class
+    public class IntegrationTests
     {
         private const string BaseUrl = "https://hacker-news.firebaseio.com/v0/";
+        private Mock<IStoryService> _mockService;
         private HttpClient _client;
-        private TestServer _server;
 
         [OneTimeSetUp]
         public void Setup()
         {
             _client = new HttpClient();
+            _mockService = new Mock<IStoryService>(MockBehavior.Strict);
+        }
+
+        [Test]
+        public void GetStoriesInParallelFixedReturnsValue()
+        {
+            var result = _mockService.Setup(t => t.GetStoriesInParallelFixed());
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void GetStoryIdsAsyncReturnsValue()
+        {
+            var result = _mockService.Setup(t => t.GetAllIdsAsync());
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void GetStoryByIdReturnsCorrectValue()
+        {
+            var result = _mockService.Setup(t => t.GetStoryById("24402410"));
+            Assert.IsNotNull(result);
         }
 
         [Test]
         public async Task ReturnStoryIdsFromExternalApi()
         {
-            // Act
+            // Arrange
             var response = await _client.GetAsync(BaseUrl + "newstories.json?print=pretty");
             response.EnsureSuccessStatusCode();
 
+            // Act
             var responseString = await response.Content.ReadAsStringAsync();
 
             // Assert
@@ -63,7 +85,6 @@ namespace NexTech_Assessment_NUnit
             var content = await response.Content.ReadAsStringAsync();
             return content.Length;
         }
-
     }
 
     public class MockClient

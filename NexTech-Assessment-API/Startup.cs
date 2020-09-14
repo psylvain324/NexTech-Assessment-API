@@ -11,9 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using NexTech_Assessment_API.Data;
-using TechAssessment.Controllers;
-using TechAssessment.Interfaces;
-using TechAssessment.Services;
+using NexTech_Assessment_API.Controllers;
+using NexTech_Assessment_API.Interfaces;
+using NexTech_Assessment_API.Services;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace NexTech_Assessment_API
