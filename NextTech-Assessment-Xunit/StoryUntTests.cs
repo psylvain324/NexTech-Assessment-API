@@ -23,7 +23,7 @@ namespace NexTech_Assessment_API.API.IntegrationTests
         public async Task TestGetStoryIdsAsync()
         {
             // Arrange
-            var request = "https://localhost:5001/GetAllIdsSync";
+            var request = "/GetAllIdsSync";
 
             // Act
             var response = await Client.GetAsync(request);
@@ -36,7 +36,7 @@ namespace NexTech_Assessment_API.API.IntegrationTests
         public async Task TestGetStoryById()
         {
             // Arrange
-            var request = "https://localhost:5001//Story/22140";
+            var request = "/Story/22140";
 
             // Act
             var response = await Client.GetAsync(request);

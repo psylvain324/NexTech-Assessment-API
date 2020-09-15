@@ -124,9 +124,12 @@ namespace NexTech_Assessment_API.Services
             return stories;
         }
 
-        public Task<List<Story>> GetNewestStoriesPaginated(PagingParams pagingParams)
+        public async Task<List<Story>> GetNewestStoriesPaginated(PagingParams pagingParams)
         {
-            throw new NotImplementedException();
+            var stories = await GetStoriesInParallelFixed();
+            return stories.Skip((pagingParams.PageNumber - 1) * pagingParams.PageSize)
+            .Take(pagingParams.PageSize)
+            .ToList();
         }
     }
 }

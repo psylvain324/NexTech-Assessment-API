@@ -86,13 +86,13 @@ namespace NexTech_Assessment_API.Controllers
         [Route("/NewStoriesPaginated/{pagingParams}")]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
         [EnableCors("CorsPolicy")]
+        //TODO - Finish this.
         public async Task<IActionResult> GetNewStoriesPaginated([FromQuery] PagingParams pagingParams)
         {
             List<Story> stories;
             try
             {
-                stories = (List<Story>)await _service.GetStoriesInParallelFixed();
-                //PagedList<Story>.ToPagedList(stories, pagingParams.PageNumber, pagingParams.PageSize);
+                stories = await _service.GetNewestStoriesPaginated(pagingParams);
             }
             catch (Exception ex)
             {
