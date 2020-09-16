@@ -125,7 +125,7 @@ namespace NexTech_Assessment_API.Data
             dbContext.StaticTestStories.Add(new Story
             {
                 Url = "www.test345.com",
-                Title = "123 - Test3",
+                Title = "123 - Learning",
                 By = "Phillip Sylvain",
                 Id = 12345,
                 Descendants = 0,

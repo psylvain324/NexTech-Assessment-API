@@ -11,21 +11,19 @@ namespace NexTech_Assessment_API.Repositories
 	public class StoryRepository : IRepository<Story>
 	{
 		private DatabaseContext _context;
-		private readonly IStoryService _service;
 		private readonly ILogger _logger;
 
-		public StoryRepository(DatabaseContext context, ILogger<StoryRepository> logger, IStoryService service)
+		public StoryRepository(DatabaseContext context, ILogger<StoryRepository> logger)
 		{
 			_context = context;
 			_logger = logger;
-			_service = service;
 		}
 
-		public bool Add(Story item)
+		public bool Add(Story story)
 		{
 			try
 			{
-				_context.StaticTestStories.Add(item);
+				_context.StaticTestStories.Add(story);
 				_context.SaveChanges();
 				return true;
 			}
@@ -76,19 +74,6 @@ namespace NexTech_Assessment_API.Repositories
 			if (_context.StaticTestStories.Count(x => x.Id == id) > 0)
 			{
 				return _context.StaticTestStories.First(x => x.Id == id);
-			}
-			return null;
-		}
-
-		public Story Get(int? id)
-		{
-			if (id == null)
-			{
-				throw new ArgumentNullException();
-			}
-			if (_context.StaticTestStories.Count(x => x.Id == id) > 0)
-			{
-				return _context.StaticTestStories.FirstOrDefault(x => x.Id == id);
 			}
 			return null;
 		}

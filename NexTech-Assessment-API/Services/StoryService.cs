@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NexTech_Assessment_API.Interfaces;
 using NexTech_Assessment_API.Models;
@@ -122,6 +121,15 @@ namespace NexTech_Assessment_API.Services
             }
 
             return stories;
+        }
+
+        public PagedList<Story> GetNewestStoriesPagedList(PagingParams pagingParams)
+        {
+            var stories = (IEnumerable<Story>)GetNewestStoriesPaginated(pagingParams);
+
+            return PagedList<Story>.ToPagedList(stories,
+                pagingParams.PageNumber,
+                pagingParams.PageSize);
         }
 
         public async Task<List<Story>> GetNewestStoriesPaginated(PagingParams pagingParams)
