@@ -25,7 +25,7 @@ namespace NexTech_Assessment_API.Services
 
             if (!httpResponse.IsSuccessStatusCode)
             {
-                throw new Exception("Unable to retrieve Storie IDs!");
+                throw new Exception("Unable to retrieve Story IDs!");
             }
 
             var content = await httpResponse.Content.ReadAsStringAsync();
@@ -123,21 +123,15 @@ namespace NexTech_Assessment_API.Services
             return stories;
         }
 
-        public PagedList<Story> GetNewestStoriesPagedList(PagingParams pagingParams)
+        public async Task<PagedList<Story>> GetNewestStoriesPagedList(PagingParams pagingParams)
         {
-            var stories = (IEnumerable<Story>)GetNewestStoriesPaginated(pagingParams);
+            var stories = await GetStoriesInParallelFixed();
+            var storyList = stories.ToList();
 
-            return PagedList<Story>.ToPagedList(stories,
+            return PagedList<Story>.ToPagedList(storyList,
                 pagingParams.PageNumber,
                 pagingParams.PageSize);
         }
 
-        public async Task<List<Story>> GetNewestStoriesPaginated(PagingParams pagingParams)
-        {
-            var stories = await GetStoriesInParallelFixed();
-            return stories.Skip((pagingParams.PageNumber - 1) * pagingParams.PageSize)
-            .Take(pagingParams.PageSize)
-            .ToList();
-        }
     }
 }

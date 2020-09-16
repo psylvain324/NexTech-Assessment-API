@@ -84,16 +84,16 @@ namespace NexTech_Assessment_API.Controllers
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        [Route("/NewStoriesPaginated/{pagingParams}")]
+        [Route("/NewStoriesPaginated")]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
         [EnableCors("CorsPolicy")]
         //TODO - This requires a change to work.
-        public IActionResult GetNewStoriesPaginated([FromQuery] PagingParams pagingParams)
+        public async Task<IActionResult> GetNewStoriesPaginated([FromQuery] PagingParams pagingParams)
         {
             PagedList<Story> stories;
             try
             {
-                stories = _service.GetNewestStoriesPagedList(pagingParams);
+                stories = await _service.GetNewestStoriesPagedList(pagingParams);
 
                 var metadata = new
                 {
@@ -106,7 +106,7 @@ namespace NexTech_Assessment_API.Controllers
                 };
 
                 Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
-                _logger.LogInformation($"Returned {stories.TotalCount} owners from database.");
+                _logger.LogInformation($"Returned {stories.TotalCount} total Stories.");
             }
             catch (Exception ex)
             {
