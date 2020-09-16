@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using NexTech_Assessment_API.Interfaces;
 using NexTech_Assessment_API.Models;
 
@@ -86,13 +87,26 @@ namespace NexTech_Assessment_API.Controllers
         [Route("/NewStoriesPaginated/{pagingParams}")]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
         [EnableCors("CorsPolicy")]
-        //TODO - Finish this.
-        public async Task<IActionResult> GetNewStoriesPaginated([FromQuery] PagingParams pagingParams)
+        //TODO - This requires a change to work.
+        public IActionResult GetNewStoriesPaginated([FromQuery] PagingParams pagingParams)
         {
-            List<Story> stories;
+            PagedList<Story> stories;
             try
             {
-                stories = await _service.GetNewestStoriesPaginated(pagingParams);
+                stories = _service.GetNewestStoriesPagedList(pagingParams);
+
+                var metadata = new
+                {
+                    stories.TotalCount,
+                    stories.PageSize,
+                    stories.CurrentPage,
+                    stories.TotalPages,
+                    stories.HasNext,
+                    stories.HasPrevious
+                };
+
+                Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+                _logger.LogInformation($"Returned {stories.TotalCount} owners from database.");
             }
             catch (Exception ex)
             {

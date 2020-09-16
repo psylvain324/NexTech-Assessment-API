@@ -9,7 +9,7 @@ namespace NexTech_Assessment_API.Interfaces
         Task<List<string>> GetAllIdsAsync();
         Task<Story> GetStoryById(string id);
         Task<List<Story>> GetNewestStories();
-        Task<List<Story>> GetNewestStoriesPaginated(PagingParams pagingParams);
+        PagedList<Story> GetNewestStoriesPagedList(PagingParams pagingParams);
         Task<IEnumerable<Story>> GetStoriesInParallelFixed();
         IEnumerable<Story> GetStoriesByFieldSearch(string field, string search, IEnumerable<Story> stories);
     }
