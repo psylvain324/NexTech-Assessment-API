@@ -81,7 +81,6 @@ namespace NexTech_Assessment_API
                 endpoints.MapControllers();
             });
 
-            //app.UseHttpsRedirection();
             app.UseResponseCaching();
             app.UseHealthChecks("/health", new HealthCheckOptions { ResponseWriter = JsonResponseWriter });
 

@@ -17,9 +17,8 @@ namespace NexTech_Assessment_API.Controllers
         private readonly ILogger<StoryController> _logger;
         private readonly IStoryService _service;
 
-        public StoryController(ILogger<StoryController> logger, IStoryService service)
+        public StoryController(IStoryService service)
         {
-            _logger = logger;
             _service = service;
         }
 

@@ -7,15 +7,14 @@ using NexTech_Assessment_API.Repositories;
 
 namespace NextTech_Assessment_Xunit
 {
-    public class StoryTestService
+    public class StoryTestService: IStoryTestService
     {
         private readonly StoryRepository _repository;
         private readonly ILogger<StoryTestService> _logger;
 
-        public StoryTestService(StoryRepository repository, ILogger<StoryTestService> logger)
+        public StoryTestService(StoryRepository repository)
         {
             _repository = repository;
-            _logger = logger;
         }
 
         public IEnumerable<Story> GetAllTestStories()

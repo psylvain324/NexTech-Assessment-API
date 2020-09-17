@@ -11,19 +11,18 @@ namespace NexTech_Assessment_API.Repositories
 	public class StoryRepository : IRepository<Story>
 	{
 		private DatabaseContext _context;
-		private readonly ILogger _logger;
+		private readonly ILogger<StoryRepository> _logger;
 
-		public StoryRepository(DatabaseContext context, ILogger<StoryRepository> logger)
+		public StoryRepository(DatabaseContext context)
 		{
 			_context = context;
-			_logger = logger;
 		}
 
 		public bool Add(Story story)
 		{
 			try
 			{
-				_context.StaticTestStories.Add(story);
+				_context.TestStories.Add(story);
 				_context.SaveChanges();
 				return true;
 			}
@@ -41,7 +40,7 @@ namespace NexTech_Assessment_API.Repositories
 				Story employee = Get(Item.Id);
 				if (employee != null)
 				{
-					_context.StaticTestStories.Remove(Item);
+					_context.TestStories.Remove(Item);
 					_context.SaveChanges();
 					return true;
 				}
@@ -58,7 +57,7 @@ namespace NexTech_Assessment_API.Repositories
 		{
 			try
 			{
-				_context.StaticTestStories.Update(item);
+				_context.TestStories.Update(item);
 				_context.SaveChanges();
 				return true;
 			}
@@ -71,21 +70,21 @@ namespace NexTech_Assessment_API.Repositories
 
 		public Story Get(int id)
 		{
-			if (_context.StaticTestStories.Count(x => x.Id == id) > 0)
+			if (_context.TestStories.Count(x => x.Id == id) > 0)
 			{
-				return _context.StaticTestStories.First(x => x.Id == id);
+				return _context.TestStories.First(x => x.Id == id);
 			}
 			return null;
 		}
 
 		public IEnumerable<Story> GetAll()
 		{
-			return _context.StaticTestStories;
+			return _context.TestStories;
 		}
 
 		public bool Exists(int id)
 		{
-			return _context.StaticTestStories.SingleOrDefault(e => e.Id == id) != null;
+			return _context.TestStories.SingleOrDefault(e => e.Id == id) != null;
 		}
 
     }

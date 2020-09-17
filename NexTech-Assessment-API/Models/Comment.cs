@@ -4,41 +4,28 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NexTech_Assessment_API.Models
 {
-    public class Story
+    public class Comment
     {
         [Key]
         [MaxLength(10)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int StoryId { get; set; }
+        public int CommentId { get; set; }
 
         public int Id { get; set; }
 
         public string By { get; set; }
 
-        public int Descendants { get; set; }
-
         [NotMapped]
         public List<string> Kids { get; set; }
 
-        public int Score { get; set; }
+        public string Text { get; set; }
 
         public string Time { get; set; }
 
-        public string Title { get; set; }
-
         public string Type { get; set; }
 
-        public string Url { get; set; }
+        public int Parent { get; set; }
 
-        public string Parent { get; set; }
-
-        public virtual Comment Comment { get; set; }
-
-        public Story()
-        {
-
-
-        }
+        public Comment() { }
     }
-
 }

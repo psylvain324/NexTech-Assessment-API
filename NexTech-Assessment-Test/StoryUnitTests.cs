@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using NexTech_Assessment_API.Data;
 using NUnit.Framework;

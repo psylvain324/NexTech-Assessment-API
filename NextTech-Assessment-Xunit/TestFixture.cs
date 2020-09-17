@@ -18,9 +18,7 @@ namespace NexTech_Assessment_API.IntegrationTests
         public static string GetProjectPath(string projectRelativePath, Assembly startupAssembly)
         {
             var projectName = startupAssembly.GetName().Name;
-
             var applicationBasePath = AppContext.BaseDirectory;
-
             var directoryInfo = new DirectoryInfo(applicationBasePath);
 
             do
@@ -30,11 +28,15 @@ namespace NexTech_Assessment_API.IntegrationTests
                 var projectDirectoryInfo = new DirectoryInfo(Path.Combine(directoryInfo.FullName, projectRelativePath));
 
                 if (projectDirectoryInfo.Exists)
+                {
                     if (new FileInfo(Path.Combine(projectDirectoryInfo.FullName, projectName, $"{projectName}.csproj")).Exists)
+                    {
                         return Path.Combine(projectDirectoryInfo.FullName, projectName);
+                    }
+                }
+
             }
             while (directoryInfo.Parent != null);
-
             throw new Exception($"Project root could not be located using the application root {applicationBasePath}.");
         }
 
@@ -89,10 +91,7 @@ namespace NexTech_Assessment_API.IntegrationTests
                 .UseEnvironment("Development")
                 .UseStartup(typeof(TStartup));
 
-            // Create instance of test server
             Server = new TestServer(webHostBuilder);
-
-            // Add configuration for client
             Client = Server.CreateClient();
             Client.BaseAddress = new Uri("http://localhost:5001");
             Client.DefaultRequestHeaders.Accept.Clear();

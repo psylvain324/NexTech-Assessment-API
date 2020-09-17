@@ -8,7 +8,7 @@ namespace NexTech_Assessment_API.Data
         public static void Initialize(DatabaseContext databaseContext)
         {
             databaseContext.Database.EnsureCreated();
-            if (databaseContext.StaticTestStories.Any())
+            if (databaseContext.TestStories.Any())
             {
                 return;
             }
@@ -20,7 +20,7 @@ namespace NexTech_Assessment_API.Data
                 By = "Phillip Sylvain",
                 Id = 12345,
                 Descendants = 0,
-                Kids = { },
+                Kids = null,
                 Score = 100,
                 Time = "01051994",
                 Type = "Test"
@@ -33,7 +33,7 @@ namespace NexTech_Assessment_API.Data
                 By = "Phillip Sylvain",
                 Id = 12345,
                 Descendants = 0,
-                Kids = { },
+                Kids = null,
                 Score = 100,
                 Time = "01051994",
                 Type = "Test"
@@ -46,7 +46,7 @@ namespace NexTech_Assessment_API.Data
                 By = "Phillip Sylvain",
                 Id = 12345,
                 Descendants = 0,
-                Kids = { },
+                Kids = null,
                 Score = 100,
                 Time = "01051994",
                 Type = "Test"
@@ -59,7 +59,7 @@ namespace NexTech_Assessment_API.Data
                 By = "Phillip Sylvain",
                 Id = 12345,
                 Descendants = 0,
-                Kids = { },
+                Kids = null,
                 Score = 100,
                 Time = "01051994",
                 Type = "Test"
@@ -72,7 +72,7 @@ namespace NexTech_Assessment_API.Data
                 By = "Phillip Sylvain",
                 Id = 12345,
                 Descendants = 0,
-                Kids = { },
+                Kids = null,
                 Score = 100,
                 Time = "01051994",
                 Type = "Test"
@@ -89,73 +89,73 @@ namespace NexTech_Assessment_API.Data
 
             foreach (Story story in stories)
             {
-                databaseContext.StaticTestStories.Add(story);
+                databaseContext.TestStories.Add(story);
             }
             databaseContext.SaveChanges();
         }
 
         public static void Seed(this DatabaseContext dbContext)
         {
-            dbContext.StaticTestStories.Add(new Story
+            dbContext.TestStories.Add(new Story
             {
                 Url = "www.test234.com",
                 Title = "123 - Test1",
                 By = "Phillip Sylvain",
                 Id = 12345,
                 Descendants = 0,
-                Kids = { },
+                Kids = null,
                 Score = 100,
                 Time = "01051994",
                 Type = "Test"
             });
 
-            dbContext.StaticTestStories.Add(new Story
+            dbContext.TestStories.Add(new Story
             {
                 Url = "www.test234.com",
                 Title = "123 - Test2",
                 By = "Phillip Sylvain",
                 Id = 12345,
                 Descendants = 0,
-                Kids = { },
+                Kids = null,
                 Score = 100,
                 Time = "01051994",
                 Type = "Test"
             });
 
-            dbContext.StaticTestStories.Add(new Story
+            dbContext.TestStories.Add(new Story
             {
                 Url = "www.test345.com",
                 Title = "123 - Learning",
                 By = "Phillip Sylvain",
                 Id = 12345,
                 Descendants = 0,
-                Kids = { },
+                Kids = null,
                 Score = 100,
                 Time = "01051994",
                 Type = "Test"
             });
 
-            dbContext.StaticTestStories.Add(new Story
+            dbContext.TestStories.Add(new Story
             {
                 Url = "www.test456.com",
                 Title = "123 - Test4",
                 By = "Phillip Sylvain",
                 Id = 12345,
                 Descendants = 0,
-                Kids = { },
+                Kids = null,
                 Score = 100,
                 Time = "01051994",
                 Type = "Test"
             });
 
-            dbContext.StaticTestStories.Add(new Story
+            dbContext.TestStories.Add(new Story
             {
                 Url = "www.test567.com",
-                Title = "Learning - Test5",
+                Title = "Learn - Test5",
                 By = "Phillip Sylvain",
                 Id = 12345,
                 Descendants = 0,
-                Kids = { },
+                Kids = null,
                 Score = 100,
                 Time = "01051994",
                 Type = "Test"
