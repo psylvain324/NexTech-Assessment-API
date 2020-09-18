@@ -13,7 +13,7 @@ namespace NexTechAssessmentAPI.Data
                 return;
             }
 
-            var story1 = new Story
+            Story story1 = new Story
             {
                 Url = "www.test234.com",
                 Title = "123 - Test1",
@@ -25,7 +25,7 @@ namespace NexTechAssessmentAPI.Data
                 Type = "Test"
             };
 
-            var story2 = new Story
+            Story story2 = new Story
             {
                 Url = "www.test234.com",
                 Title = "123 - Test2",
@@ -37,7 +37,7 @@ namespace NexTechAssessmentAPI.Data
                 Type = "Test"
             };
 
-            var story3 = new Story
+            Story story3 = new Story
             {
                 Url = "www.test345.com",
                 Title = "123 - Test3",
@@ -49,7 +49,7 @@ namespace NexTechAssessmentAPI.Data
                 Type = "Test"
             };
 
-            var story4 = new Story
+            Story story4 = new Story
             {
                 Url = "www.test456.com",
                 Title = "123 - Test4",
@@ -61,7 +61,7 @@ namespace NexTechAssessmentAPI.Data
                 Type = "Test"
             };
 
-            var story5 = new Story
+            Story story5 = new Story
             {
                 Url = "www.test567.com",
                 Title = "Learning - Test5",
@@ -73,7 +73,7 @@ namespace NexTechAssessmentAPI.Data
                 Type = "Test"
             };
 
-            var stories = new Story[]
+            Story[] stories = new Story[]
             {
                 story1,
                 story2,

@@ -87,7 +87,6 @@ namespace NexTechAssessmentAPI.Controllers
         [Route("/NewStoriesPaginated")]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
         [EnableCors("CorsPolicy")]
-        //TODO - This requires a change to work.
         public async Task<IActionResult> GetNewStoriesPaginated([FromQuery] PagingParams pagingParams)
         {
             PagedList<Story> stories;
@@ -159,7 +158,7 @@ namespace NexTechAssessmentAPI.Controllers
         {
             try
             {
-                var stories = _service.GetStoriesInParallelFixed().Result;
+                IEnumerable<Story> stories = _service.GetStoriesInParallelFixed().Result;
                 return Ok(_service.GetStoriesByFieldSearch(field, search, stories));
             }
             catch (Exception ex)

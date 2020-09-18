@@ -7,11 +7,11 @@ namespace NexTechAssessmentAPI.UnitTests
     {
         public static DatabaseContext GetTestDatabaseContext(string dbName)
         {
-            var options = new DbContextOptionsBuilder<DatabaseContext>()
+            DbContextOptions<DatabaseContext> options = new DbContextOptionsBuilder<DatabaseContext>()
                 .UseInMemoryDatabase(databaseName: dbName)
                 .Options;
 
-            var dbContext = new DatabaseContext(options);
+            DatabaseContext dbContext = new DatabaseContext(options);
             dbContext.Seed();
             return dbContext;
         }

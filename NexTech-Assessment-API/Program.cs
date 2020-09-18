@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,11 +10,11 @@ namespace NexTechAssessmentAPI
     {
         public static void Main(string[] args)
         {
-            var host = CreateWebHostBuilder(args).Build();
-            using (var scope = host.Services.CreateScope())
+            IHost host = CreateWebHostBuilder(args).Build();
+            using (IServiceScope scope = host.Services.CreateScope())
             {
-                var services = scope.ServiceProvider;
-                var context = services.GetRequiredService<DatabaseContext>();
+                IServiceProvider services = scope.ServiceProvider;
+                DatabaseContext context = services.GetRequiredService<DatabaseContext>();
             }
 
             host.Run();

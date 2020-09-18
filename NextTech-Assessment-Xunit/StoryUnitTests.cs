@@ -17,24 +17,22 @@ namespace NextTech_Assessment_Xunit
         public void TestGetAllStoriesThenBySearch()
         {
             //Arrange
-            using (DatabaseContext dbContext = DbContextMocker.GetTestDatabaseContext(nameof(TestGetAllStoriesThenBySearch)))
-            {
-                Mock<DbSet<Story>> mockSet = new Mock<DbSet<Story>>();
-                StoryRepository repository = new StoryRepository(dbContext);
-                StoryTestService testService = new StoryTestService(repository);
-                HttpClient mockClient = new HttpClient();
-                StoryService service = new StoryService(mockClient);
+            using DatabaseContext dbContext = DbContextMocker.GetTestDatabaseContext(nameof(TestGetAllStoriesThenBySearch));
+            Mock<DbSet<Story>> mockSet = new Mock<DbSet<Story>>();
+            StoryRepository repository = new StoryRepository(dbContext);
+            StoryTestService testService = new StoryTestService(repository);
+            HttpClient mockClient = new HttpClient();
+            StoryService service = new StoryService(mockClient);
 
-                //Act
-                List<Story> resultsList = (List<Story>)testService.GetAllTestStories();
-                IEnumerable<Story> results = testService.GetAllTestStories();
-                IEnumerable<Story> searchResults = service.GetStoriesByFieldSearch("Title", "Learning", results);
-                dbContext.Dispose();
+            //Act
+            List<Story> resultsList = (List<Story>)testService.GetAllTestStories();
+            IEnumerable<Story> results = testService.GetAllTestStories();
+            IEnumerable<Story> searchResults = service.GetStoriesByFieldSearch("Title", "Learning", results);
+            dbContext.Dispose();
 
-                //Assert
-                Assert.Equal(5, resultsList.Count);
-                Assert.Single(searchResults);
-            }
+            //Assert
+            Assert.Equal(5, resultsList.Count);
+            Assert.Single(searchResults);
         }
 
     }

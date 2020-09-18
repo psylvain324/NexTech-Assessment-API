@@ -77,7 +77,7 @@ namespace NextTech_Assessment_Xunit
         {
             try
             {
-                var story = _repository.GetById(id);
+                Story story = _repository.GetById(id);
                 _repository.Delete(story);
             }
             catch (Exception ex)

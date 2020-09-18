@@ -74,15 +74,15 @@ namespace NexTechAssessmentAPI.Repositories
 		}
 
 		public Story GetById(int id)
-		{
-			if (_context.TestStories.Any(x => x.Id == id))
-			{
-				return _context.TestStories.First(x => x.Id == id);
-			}
-			return null;
-		}
+        {
+            if (!_context.TestStories.Any(x => x.Id == id))
+            {
+                return null;
+            }
+            return _context.TestStories.First(x => x.Id == id);
+        }
 
-		public IEnumerable<Story> GetAll()
+        public IEnumerable<Story> GetAll()
 		{
 			return _context.TestStories;
 		}

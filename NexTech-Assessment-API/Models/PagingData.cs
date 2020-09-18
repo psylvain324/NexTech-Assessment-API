@@ -40,8 +40,8 @@ namespace NexTechAssessmentAPI.Models
         }
         public static PagedList<T> ToPagedList(List<T> source, int pageNumber, int pageSize)
         {
-            var count = source.Count;
-            var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            int count = source.Count;
+            List<T> items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
             return new PagedList<T>(items, count, pageNumber, pageSize);
         }
 

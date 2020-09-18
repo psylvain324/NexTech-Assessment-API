@@ -29,3 +29,9 @@ dotnet_diagnostic.CA2227.severity = suggestion
 
 # CA1056: URI-like properties should not be strings
 dotnet_diagnostic.CA1056.severity = suggestion
+
+# IDE0058: Expression value is never used
+csharp_style_unused_value_expression_statement_preference = discard_variable:none
+
+# Default severity for all analyzer diagnostics
+dotnet_analyzer_diagnostic.severity = none
