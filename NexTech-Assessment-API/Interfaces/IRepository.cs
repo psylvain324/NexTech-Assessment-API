@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using NexTech_Assessment_API.Models;
+using NexTechAssessmentAPI.Models;
 
-namespace NexTech_Assessment_API.Interfaces
+namespace NexTechAssessmentAPI.Interfaces
 {
     public interface IRepository<T>
     {
-        T Get(int id);
+        T GetById(int id);
         IEnumerable<T> GetAll();
         bool Add(T item);
         bool Delete(T Item);

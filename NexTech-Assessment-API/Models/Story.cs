@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace NexTech_Assessment_API.Models
+namespace NexTechAssessmentAPI.Models
 {
     public class Story
     {
@@ -32,6 +32,7 @@ namespace NexTech_Assessment_API.Models
 
         public string Parent { get; set; }
 
+        [NotMapped]
         public virtual Comment Comment { get; set; }
 
         public Story()

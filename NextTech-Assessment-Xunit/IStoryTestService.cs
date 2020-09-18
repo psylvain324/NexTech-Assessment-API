@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using NexTech_Assessment_API.Models;
+using NexTechAssessmentAPI.Models;
 
 namespace NextTech_Assessment_Xunit
 {

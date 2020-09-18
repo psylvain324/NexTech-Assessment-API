@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace NexTech_Assessment_API.Models
+namespace NexTechAssessmentAPI.Models
 {
     public class Comment
     {
@@ -16,7 +16,7 @@ namespace NexTech_Assessment_API.Models
         public string By { get; set; }
 
         [NotMapped]
-        public List<string> Kids { get; set; }
+        public List<string> Kids { get; }
 
         public string Text { get; set; }
 

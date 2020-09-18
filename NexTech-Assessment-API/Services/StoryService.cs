@@ -4,10 +4,10 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using NexTech_Assessment_API.Interfaces;
-using NexTech_Assessment_API.Models;
+using NexTechAssessmentAPI.Interfaces;
+using NexTechAssessmentAPI.Models;
 
-namespace NexTech_Assessment_API.Services
+namespace NexTechAssessmentAPI.Services
 {
     public class StoryService : IStoryService
     {
@@ -21,14 +21,14 @@ namespace NexTech_Assessment_API.Services
 
         public async Task<List<string>> GetAllIdsAsync()
         {
-            var httpResponse = await _client.GetAsync(BaseUrl + "newstories.json?print=pretty");
+            HttpResponseMessage httpResponse = await _client.GetAsync(BaseUrl + "newstories.json?print=pretty").ConfigureAwait(false);
 
             if (!httpResponse.IsSuccessStatusCode)
             {
                 throw new Exception("Unable to retrieve Story IDs!");
             }
 
-            var content = await httpResponse.Content.ReadAsStringAsync();
+            var content = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             var idList = JsonConvert.DeserializeObject<List<string>>(content);
 
             return idList;
@@ -37,16 +37,16 @@ namespace NexTech_Assessment_API.Services
         public async Task<IEnumerable<Story>> GetStoriesInParallelFixed()
         {
             var batchSize = 50;
-            var idList = await GetAllIdsAsync();
+            var idList = await GetAllIdsAsync().ConfigureAwait(false);
             var stories = new List<Story>();
             var validStories = new List<Story>();
-            int numberOfBatches = (int)Math.Ceiling((double)idList.Count() / batchSize);
+            int numberOfBatches = (int)Math.Ceiling((double)idList.Count / batchSize);
 
             for (int i = 0; i < numberOfBatches; i++)
             {
                 var currentIds = idList.Skip(i * batchSize).Take(batchSize);
                 var tasks = currentIds.Select(id => GetStoryById(id));
-                stories.AddRange(await Task.WhenAll(tasks));
+                stories.AddRange(await Task.WhenAll(tasks).ConfigureAwait(false));
             }
 
             foreach (Story story in stories)
@@ -62,16 +62,16 @@ namespace NexTech_Assessment_API.Services
 
         public async Task<Story> GetStoryById(string id)
         {
-            var httpResponse = await _client.GetAsync(BaseUrl + "item/" + id + ".json?print=pretty");
+            HttpResponseMessage httpResponse = await _client.GetAsync(BaseUrl + "item/" + id + ".json?print=pretty").ConfigureAwait(false);
 
             if (!httpResponse.IsSuccessStatusCode)
             {
                 throw new Exception("Unable to retrieve Story!");
             }
 
-            var content = await httpResponse.Content.ReadAsStringAsync();
+            var content = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             var story = JsonConvert.DeserializeObject<Story>(content);
-            if(story.Url == "" || story.Url == null)
+            if(string.IsNullOrEmpty(story.Url) || story.Url == null)
             {
                 return null;
             }
@@ -97,23 +97,23 @@ namespace NexTech_Assessment_API.Services
 
         public async Task<List<Story>> GetNewestStories()
         {
-            var idList = await GetAllIdsAsync();
-            var stories = new List<Story>();
+            List<string> idList = await GetAllIdsAsync().ConfigureAwait(false);
+            List<Story> stories = new List<Story>();
 
             if (idList != null)
             {
                 foreach (string id in idList)
                 {
-                    var httpResponse = await _client.GetAsync(BaseUrl + "item/" + id + ".json?print=pretty");
+                    var httpResponse = await _client.GetAsync(BaseUrl + "item/" + id + ".json?print=pretty").ConfigureAwait(false);
 
                     if (!httpResponse.IsSuccessStatusCode)
                     {
                         throw new Exception("Unable to retrieve Story!");
                     }
 
-                    var content = await httpResponse.Content.ReadAsStringAsync();
+                    var content = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                     var story = JsonConvert.DeserializeObject<Story>(content);
-                    if(story.Url != string.Empty || story.Url != null)
+                    if(!string.IsNullOrEmpty(story.Url) || story.Url != null)
                     {
                         stories.Add(story);
                     }
@@ -125,7 +125,7 @@ namespace NexTech_Assessment_API.Services
 
         public async Task<PagedList<Story>> GetNewestStoriesPagedList(PagingParams pagingParams)
         {
-            var stories = await GetStoriesInParallelFixed();
+            var stories = await GetStoriesInParallelFixed().ConfigureAwait(false);
             var storyList = stories.ToList();
 
             return PagedList<Story>.ToPagedList(storyList,

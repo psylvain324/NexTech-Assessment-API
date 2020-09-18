@@ -1,4 +1,4 @@
-namespace NexTech_Assessment_API.Models
+namespace NexTechAssessmentAPI.Models
 {
     public class ErrorViewModel
     {

@@ -10,13 +10,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using NexTech_Assessment_API.Data;
-using NexTech_Assessment_API.Controllers;
-using NexTech_Assessment_API.Interfaces;
-using NexTech_Assessment_API.Services;
+using NexTechAssessmentAPI.Data;
+using NexTechAssessmentAPI.Controllers;
+using NexTechAssessmentAPI.Interfaces;
+using NexTechAssessmentAPI.Services;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace NexTech_Assessment_API
+namespace NexTechAssessmentAPI
 {
     public class Startup
     {
@@ -28,7 +28,7 @@ namespace NexTech_Assessment_API
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public static void ConfigureServices(IServiceCollection services)
         {
             services.AddSwaggerGen();
             services.AddDbContext<DatabaseContext>(options => options.UseInMemoryDatabase(databaseName: "NexTechAssessmentDB"));
@@ -86,10 +86,10 @@ namespace NexTech_Assessment_API
 
         }
 
-        private async Task JsonResponseWriter(HttpContext context, HealthReport report)
+        private Task JsonResponseWriter(HttpContext context, HealthReport report)
         {
             context.Response.ContentType = "application/json";
-            await JsonSerializer.SerializeAsync(context.Response.Body, new { Status = report.Status.ToString() },
+            return JsonSerializer.SerializeAsync(context.Response.Body, new { Status = report.Status.ToString() },
                 new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
         }
     }

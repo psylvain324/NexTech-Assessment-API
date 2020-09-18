@@ -1,19 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
-using NexTech_Assessment_API.Data;
-using NexTech_Assessment_API.Interfaces;
-using NexTech_Assessment_API.Models;
+using NexTechAssessmentAPI.Data;
+using NexTechAssessmentAPI.Interfaces;
+using NexTechAssessmentAPI.Models;
 
-namespace NexTech_Assessment_API.Repositories
+namespace NexTechAssessmentAPI.Repositories
 {
-	public class StoryRepository : IRepository<Story>
+    public class StoryRepository : IRepository<Story>
 	{
-		private DatabaseContext _context;
+		private readonly DatabaseContext _context;
 		private readonly ILogger<StoryRepository> _logger;
 
-		public StoryRepository(DatabaseContext context)
+        public StoryRepository(DatabaseContext context, ILogger<StoryRepository> logger)
+        {
+			_context = context;
+			_logger = logger;
+        }
+
+        public StoryRepository(DatabaseContext context)
 		{
 			_context = context;
 		}
@@ -26,10 +31,10 @@ namespace NexTech_Assessment_API.Repositories
 				_context.SaveChanges();
 				return true;
 			}
-			catch (Exception ex)
+            catch
 			{
-				_logger.LogError("Failed to add Story: " + ex.Message);
-				return false;
+				_logger.LogError("Failed to add Story!");
+				throw;
 			}
 		}
 
@@ -37,7 +42,7 @@ namespace NexTech_Assessment_API.Repositories
 		{
 			try
 			{
-				Story employee = Get(Item.Id);
+                Story employee = GetById(Item.Id);
 				if (employee != null)
 				{
 					_context.TestStories.Remove(Item);
@@ -46,10 +51,10 @@ namespace NexTech_Assessment_API.Repositories
 				}
 				return false;
 			}
-			catch (Exception ex)
+			catch
 			{
-				_logger.LogError("Unable to delete Story: " + ex.Message);
-				return false;
+				_logger.LogError("Unable to delete Story!");
+				throw;
 			}
 		}
 
@@ -61,16 +66,16 @@ namespace NexTech_Assessment_API.Repositories
 				_context.SaveChanges();
 				return true;
 			}
-			catch (Exception ex)
+			catch
 			{
-				_logger.LogError("Unable to save Story: " + ex.Message);
+				_logger.LogError("Unable to save Story!");
+				throw;
 			}
-			return false;
 		}
 
-		public Story Get(int id)
+		public Story GetById(int id)
 		{
-			if (_context.TestStories.Count(x => x.Id == id) > 0)
+			if (_context.TestStories.Any(x => x.Id == id))
 			{
 				return _context.TestStories.First(x => x.Id == id);
 			}

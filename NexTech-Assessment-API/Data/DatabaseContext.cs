@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NexTech_Assessment_API.Models;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using NexTechAssessmentAPI.Models;
 
-namespace NexTech_Assessment_API.Data
+namespace NexTechAssessmentAPI.Data
 {
     public class DatabaseContext : DbContext
     {
@@ -16,12 +17,6 @@ namespace NexTech_Assessment_API.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            //modelBuilder.Entity<Story>()
-            //.Property(k => k.Kids)
-            //.HasConversion(
-            //    v => string.Join(',', v),
-            //    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
 
             modelBuilder.Entity<Story>()
                 .HasKey(s => s.StoryId)

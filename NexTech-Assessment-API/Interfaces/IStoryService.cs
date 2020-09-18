@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using NexTech_Assessment_API.Models;
+using NexTechAssessmentAPI.Models;
 
-namespace NexTech_Assessment_API.Interfaces
+namespace NexTechAssessmentAPI.Interfaces
 {
     public interface IStoryService
     {

@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using Moq;
-using NexTech_Assessment_API.Data;
+using NexTechAssessmentAPI.Data;
 using NUnit.Framework;
-using NexTech_Assessment_API.Interfaces;
-using NexTech_Assessment_API.Models;
+using NexTechAssessmentAPI.Interfaces;
+using NexTechAssessmentAPI.Models;
 using System.Linq;
-using NexTech_Assessment_API.Services;
+using NexTechAssessmentAPI.Services;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace NexTech_Assessment_NUnit
 {
@@ -27,16 +28,16 @@ namespace NexTech_Assessment_NUnit
             public void GetStoryByFieldSearchReturnsCorrectValue()
             {
                 //Arrange
-                var mockContext = new Mock<DatabaseContext>();
-                var testStories = GetTestStories();
+                Mock<DatabaseContext> mockContext = new Mock<DatabaseContext>();
+                IEnumerable<Story> testStories = GetTestStories();
                 //mockContext.Setup(c => c.StaticTestStories).Returns((DbSet<Story>)testStories);
 
-                var service = new StoryService(_client);
-                var storyIds = service.GetAllIdsAsync();
-                var stories = service.GetStoriesInParallelFixed();
+                StoryService service = new StoryService(_client);
+                Task<List<string>> storyIds = service.GetAllIdsAsync();
+                Task<IEnumerable<Story>> stories = service.GetStoriesInParallelFixed();
 
                 //Act
-                var mockService = new Mock<IStoryService>();
+                Mock<IStoryService> mockService = new Mock<IStoryService>();
                 mockService.Setup(m => m.GetStoriesByFieldSearch("Title", "Learning", testStories));
 
                 //Assert
@@ -47,7 +48,7 @@ namespace NexTech_Assessment_NUnit
 
             public IEnumerable<Story> GetTestStories()
             {
-                var data = new List<Story>
+                IQueryable<Story> data = new List<Story>
                 {
                 new Story {
                     Url = "www.test234.com",

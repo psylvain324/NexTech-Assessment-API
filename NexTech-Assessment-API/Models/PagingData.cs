@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NexTech_Assessment_API.Models
+namespace NexTechAssessmentAPI.Models
 {
     public class PagingParams
     {
-        const int maxPageSize = 50;
+        private readonly int maxPageSize = 50;
         public int PageNumber { get; set; } = 1;
         private int _pageSize = 10;
         public int PageSize
@@ -40,7 +40,7 @@ namespace NexTech_Assessment_API.Models
         }
         public static PagedList<T> ToPagedList(List<T> source, int pageNumber, int pageSize)
         {
-            var count = source.Count();
+            var count = source.Count;
             var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
             return new PagedList<T>(items, count, pageNumber, pageSize);
         }

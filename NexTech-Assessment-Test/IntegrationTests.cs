@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Moq;
 using Moq.Protected;
-using NexTech_Assessment_API.Interfaces;
+using NexTechAssessmentAPI.Interfaces;
 using NUnit.Framework;
 
 namespace NexTech_Assessment_NUnit
@@ -48,11 +48,11 @@ namespace NexTech_Assessment_NUnit
         public async Task ReturnStoryIdsFromExternalApi()
         {
             // Arrange
-            var response = await _client.GetAsync(BaseUrl + "newstories.json?print=pretty");
+            HttpResponseMessage response = await _client.GetAsync(BaseUrl + "newstories.json?print=pretty");
             response.EnsureSuccessStatusCode();
 
             // Act
-            var responseString = await response.Content.ReadAsStringAsync();
+            string responseString = await response.Content.ReadAsStringAsync();
 
             // Assert
             Assert.GreaterOrEqual(responseString.Length, 500);
@@ -62,7 +62,7 @@ namespace NexTech_Assessment_NUnit
         public async Task MockHttpClientRequest()
         {
             const string testContent = "Test";
-            var mockMessageHandler = new Mock<HttpMessageHandler>();
+            Mock<HttpMessageHandler> mockMessageHandler = new Mock<HttpMessageHandler>();
             mockMessageHandler.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(new HttpResponseMessage
@@ -70,10 +70,10 @@ namespace NexTech_Assessment_NUnit
                     StatusCode = HttpStatusCode.OK,
                     Content = new StringContent(testContent)
                 });
-            var underTest = new MockClient(new HttpClient(mockMessageHandler.Object));
+            MockClient underTest = new MockClient(new HttpClient(mockMessageHandler.Object));
 
             // Act
-            var result = await underTest.GetContentSize("http://localhost:5001");
+            int result = await underTest.GetContentSize("http://localhost:5001");
 
             // Assert
             Assert.AreEqual(testContent.Length, result);
@@ -81,8 +81,8 @@ namespace NexTech_Assessment_NUnit
 
         public async Task<int> GetContentSize(string uri)
         {
-            var response = await _client.GetAsync(uri);
-            var content = await response.Content.ReadAsStringAsync();
+            HttpResponseMessage response = await _client.GetAsync(uri);
+            string content = await response.Content.ReadAsStringAsync();
             return content.Length;
         }
     }
@@ -96,8 +96,8 @@ namespace NexTech_Assessment_NUnit
 
         public async Task<int> GetContentSize(string uri)
         {
-            var response = await _httpClient.GetAsync(uri);
-            var content = await response.Content.ReadAsStringAsync();
+            HttpResponseMessage response = await _httpClient.GetAsync(uri);
+            string content = await response.Content.ReadAsStringAsync();
             return content.Length;
         }
 

@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NexTech_Assessment_API.Data;
+using NexTechAssessmentAPI.Data;
 
-namespace NexTech_Assessment_API
+namespace NexTechAssessmentAPI
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {

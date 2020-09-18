@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
-using NexTech_Assessment_API.Models;
-using NexTech_Assessment_API.Repositories;
+using NexTechAssessmentAPI.Models;
+using NexTechAssessmentAPI.Repositories;
 
 namespace NextTech_Assessment_Xunit
 {
@@ -12,9 +12,10 @@ namespace NextTech_Assessment_Xunit
         private readonly StoryRepository _repository;
         private readonly ILogger<StoryTestService> _logger;
 
-        public StoryTestService(StoryRepository repository)
+        public StoryTestService(StoryRepository repository, ILogger<StoryTestService> logger = null)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         public IEnumerable<Story> GetAllTestStories()
@@ -76,7 +77,7 @@ namespace NextTech_Assessment_Xunit
         {
             try
             {
-                var story = _repository.Get(id);
+                var story = _repository.GetById(id);
                 _repository.Delete(story);
             }
             catch (Exception ex)

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using NexTech_Assessment_API.Models;
+using NexTechAssessmentAPI.Models;
 
-namespace NexTech_Assessment_API.Data
+namespace NexTechAssessmentAPI.Data
 {
     public static class DataInitializer
     {
@@ -20,7 +20,6 @@ namespace NexTech_Assessment_API.Data
                 By = "Phillip Sylvain",
                 Id = 12345,
                 Descendants = 0,
-                Kids = null,
                 Score = 100,
                 Time = "01051994",
                 Type = "Test"
@@ -33,7 +32,6 @@ namespace NexTech_Assessment_API.Data
                 By = "Phillip Sylvain",
                 Id = 12345,
                 Descendants = 0,
-                Kids = null,
                 Score = 100,
                 Time = "01051994",
                 Type = "Test"
@@ -46,7 +44,6 @@ namespace NexTech_Assessment_API.Data
                 By = "Phillip Sylvain",
                 Id = 12345,
                 Descendants = 0,
-                Kids = null,
                 Score = 100,
                 Time = "01051994",
                 Type = "Test"
@@ -59,7 +56,6 @@ namespace NexTech_Assessment_API.Data
                 By = "Phillip Sylvain",
                 Id = 12345,
                 Descendants = 0,
-                Kids = null,
                 Score = 100,
                 Time = "01051994",
                 Type = "Test"
@@ -72,7 +68,6 @@ namespace NexTech_Assessment_API.Data
                 By = "Phillip Sylvain",
                 Id = 12345,
                 Descendants = 0,
-                Kids = null,
                 Score = 100,
                 Time = "01051994",
                 Type = "Test"
@@ -103,7 +98,6 @@ namespace NexTech_Assessment_API.Data
                 By = "Phillip Sylvain",
                 Id = 12345,
                 Descendants = 0,
-                Kids = null,
                 Score = 100,
                 Time = "01051994",
                 Type = "Test"
@@ -116,7 +110,6 @@ namespace NexTech_Assessment_API.Data
                 By = "Phillip Sylvain",
                 Id = 12345,
                 Descendants = 0,
-                Kids = null,
                 Score = 100,
                 Time = "01051994",
                 Type = "Test"
@@ -129,7 +122,6 @@ namespace NexTech_Assessment_API.Data
                 By = "Phillip Sylvain",
                 Id = 12345,
                 Descendants = 0,
-                Kids = null,
                 Score = 100,
                 Time = "01051994",
                 Type = "Test"
@@ -142,7 +134,6 @@ namespace NexTech_Assessment_API.Data
                 By = "Phillip Sylvain",
                 Id = 12345,
                 Descendants = 0,
-                Kids = null,
                 Score = 100,
                 Time = "01051994",
                 Type = "Test"
@@ -155,7 +146,6 @@ namespace NexTech_Assessment_API.Data
                 By = "Phillip Sylvain",
                 Id = 12345,
                 Descendants = 0,
-                Kids = null,
                 Score = 100,
                 Time = "01051994",
                 Type = "Test"

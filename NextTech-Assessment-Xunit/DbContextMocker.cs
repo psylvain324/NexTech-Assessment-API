@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NexTech_Assessment_API.Data;
+using NexTechAssessmentAPI.Data;
 
-namespace NexTech_Assessment_API.UnitTests
+namespace NexTechAssessmentAPI.UnitTests
 {
     public static class DbContextMocker
     {

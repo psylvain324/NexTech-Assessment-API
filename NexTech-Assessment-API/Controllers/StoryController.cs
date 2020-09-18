@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using NexTech_Assessment_API.Interfaces;
-using NexTech_Assessment_API.Models;
+using NexTechAssessmentAPI.Interfaces;
+using NexTechAssessmentAPI.Models;
 
-namespace NexTech_Assessment_API.Controllers
+namespace NexTechAssessmentAPI.Controllers
 {
     [Produces("application/json")]
     [ApiController]
@@ -17,9 +17,10 @@ namespace NexTech_Assessment_API.Controllers
         private readonly ILogger<StoryController> _logger;
         private readonly IStoryService _service;
 
-        public StoryController(IStoryService service)
+        public StoryController(IStoryService service, ILogger<StoryController> logger = null)
         {
             _service = service;
+            _logger = logger;
         }
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace NexTech_Assessment_API.Controllers
             List<string> storyIds;
             try
             {
-                storyIds = await _service.GetAllIdsAsync();
+                storyIds = await _service.GetAllIdsAsync().ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -66,7 +67,7 @@ namespace NexTech_Assessment_API.Controllers
             List<Story> stories;
             try
             {
-                stories = (List<Story>)await _service.GetStoriesInParallelFixed();
+                stories = (List<Story>)await _service.GetStoriesInParallelFixed().ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -92,7 +93,7 @@ namespace NexTech_Assessment_API.Controllers
             PagedList<Story> stories;
             try
             {
-                stories = await _service.GetNewestStoriesPagedList(pagingParams);
+                stories = await _service.GetNewestStoriesPagedList(pagingParams).ConfigureAwait(false);
 
                 var metadata = new
                 {
@@ -132,7 +133,7 @@ namespace NexTech_Assessment_API.Controllers
             Story story;
             try
             {
-                story = await _service.GetStoryById(id);
+                story = await _service.GetStoryById(id).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

@@ -11,21 +11,21 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace NexTech_Assessment_API.IntegrationTests
+namespace NexTechAssessmentAPI.IntegrationTests
 {
     public class TestFixture<TStartup> : IDisposable
     {
         public static string GetProjectPath(string projectRelativePath, Assembly startupAssembly)
         {
-            var projectName = startupAssembly.GetName().Name;
-            var applicationBasePath = AppContext.BaseDirectory;
-            var directoryInfo = new DirectoryInfo(applicationBasePath);
+            string projectName = startupAssembly.GetName().Name;
+            string applicationBasePath = AppContext.BaseDirectory;
+            DirectoryInfo directoryInfo = new DirectoryInfo(applicationBasePath);
 
             do
             {
                 directoryInfo = directoryInfo.Parent;
 
-                var projectDirectoryInfo = new DirectoryInfo(Path.Combine(directoryInfo.FullName, projectRelativePath));
+                DirectoryInfo projectDirectoryInfo = new DirectoryInfo(Path.Combine(directoryInfo.FullName, projectRelativePath));
 
                 if (projectDirectoryInfo.Exists)
                 {
@@ -40,7 +40,7 @@ namespace NexTech_Assessment_API.IntegrationTests
             throw new Exception($"Project root could not be located using the application root {applicationBasePath}.");
         }
 
-        private TestServer Server;
+        private readonly TestServer Server;
 
         public TestFixture()
             : this(Path.Combine(""))
@@ -57,9 +57,9 @@ namespace NexTech_Assessment_API.IntegrationTests
 
         protected virtual void InitializeServices(IServiceCollection services)
         {
-            var startupAssembly = typeof(TStartup).GetTypeInfo().Assembly;
+            Assembly startupAssembly = typeof(TStartup).GetTypeInfo().Assembly;
 
-            var manager = new ApplicationPartManager
+            ApplicationPartManager manager = new ApplicationPartManager
             {
                 ApplicationParts =
                 {
@@ -77,14 +77,14 @@ namespace NexTech_Assessment_API.IntegrationTests
 
         protected TestFixture(string relativeTargetProjectParentDir)
         {
-            var startupAssembly = typeof(TStartup).GetTypeInfo().Assembly;
-            var contentRoot = GetProjectPath(relativeTargetProjectParentDir, startupAssembly);
+            Assembly startupAssembly = typeof(TStartup).GetTypeInfo().Assembly;
+            string contentRoot = GetProjectPath(relativeTargetProjectParentDir, startupAssembly);
 
-            var configurationBuilder = new ConfigurationBuilder()
+            IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(contentRoot)
                 .AddJsonFile("appsettings.json");
 
-            var webHostBuilder = new WebHostBuilder()
+            IWebHostBuilder webHostBuilder = new WebHostBuilder()
                 .UseContentRoot(contentRoot)
                 .ConfigureServices(InitializeServices)
                 .UseConfiguration(configurationBuilder.Build())
