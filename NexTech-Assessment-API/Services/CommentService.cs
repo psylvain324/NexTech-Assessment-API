@@ -76,6 +76,8 @@ namespace NexTech_Assessment_API.Services
                         string childContent = await childResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                         Comment comment = JsonConvert.DeserializeObject<Comment>(childContent);
 
+                        //Overwrite everything but Url for now.
+                        //Not a longterm solution just to use for UI. 
                         viewModel.Id = comment.Id;
                         viewModel.Time = comment.Time;
                         viewModel.Type = comment.Type;

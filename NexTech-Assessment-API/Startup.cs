@@ -15,6 +15,9 @@ using NexTechAssessmentAPI.Controllers;
 using NexTechAssessmentAPI.Interfaces;
 using NexTechAssessmentAPI.Services;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using NexTech_Assessment_API.Interfaces;
+using NexTech_Assessment_API.Services;
+using NexTech_Assessment_API.Controllers;
 
 namespace NexTechAssessmentAPI
 {
@@ -53,7 +56,9 @@ namespace NexTechAssessmentAPI
             services.AddResponseCaching();
 
             services.AddTransient<IStoryService, StoryService>();
+            services.AddSingleton<ICommentService, CommentService>();
             services.AddHttpClient<StoryController>();
+            services.AddHttpClient<CommentController>();
 
             services.AddHealthChecks();
         }

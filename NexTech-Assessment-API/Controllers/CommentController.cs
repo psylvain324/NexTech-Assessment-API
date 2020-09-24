@@ -50,6 +50,7 @@ namespace NexTech_Assessment_API.Controllers
 
         /// <summary>
         /// This returns Comments and Stories as single View Model
+        /// To be used to process through a TreeNode in UI.
         /// </summary>
         /// <returns>IActionResult of List of StoryCommentViewModel</returns>
         [HttpGet]
