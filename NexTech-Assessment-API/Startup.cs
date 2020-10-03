@@ -56,7 +56,7 @@ namespace NexTechAssessmentAPI
             services.AddResponseCaching();
 
             services.AddTransient<IStoryService, StoryService>();
-            services.AddSingleton<ICommentService, CommentService>();
+            services.AddTransient<ICommentService, CommentService>();
             services.AddHttpClient<StoryController>();
             services.AddHttpClient<CommentController>();
 

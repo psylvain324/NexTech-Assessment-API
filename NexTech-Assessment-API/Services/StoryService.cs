@@ -39,7 +39,7 @@ namespace NexTechAssessmentAPI.Services
             List<String> idList = await GetAllIdsAsync().ConfigureAwait(false);
             List<Story> stories = new List<Story>();
             List<Story> validStories = new List<Story>();
-            int batchSize = 50;
+            int batchSize = 25;
             double numberOfBatches = (int)Math.Ceiling((double)idList.Count / batchSize);
 
             for (int i = 0; i < numberOfBatches; i++)
@@ -135,5 +135,30 @@ namespace NexTechAssessmentAPI.Services
                 pagingParams.PageSize);
         }
 
+        public async Task<List<Story>> GetStoriesByIdList(List<string> storyIds)
+        {
+            List<String> idList = await GetAllIdsAsync().ConfigureAwait(false);
+            List<Story> stories = new List<Story>();
+            List<Story> validStories = new List<Story>();
+            int batchSize = 5;
+            double numberOfBatches = (int)Math.Ceiling((double)idList.Count / batchSize);
+
+            for (int i = 0; i < numberOfBatches; i++)
+            {
+                IEnumerable<string> currentIds = idList.Skip(i * batchSize).Take(batchSize);
+                IEnumerable<Task<Story>> tasks = currentIds.Select(id => GetStoryById(id));
+                stories.AddRange(await Task.WhenAll(tasks).ConfigureAwait(false));
+            }
+
+            foreach (Story story in stories)
+            {
+                if (story != null)
+                {
+                    validStories.Add(story);
+                }
+            }
+
+            return validStories;
+        }
     }
 }
